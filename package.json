@@ -14,5 +14,8 @@
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/dni/pusch360/issues"
+  },
+  "dependencies": {
+    "express": "~4.4.5"
   }
 }

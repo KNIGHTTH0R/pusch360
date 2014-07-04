@@ -1,0 +1,18 @@
+{
+  "name": "pusch360",
+  "version": "0.0.0",
+  "description": "360 awesomeness",
+  "main": "server.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dni/pusch360.git"
+  },
+  "author": "dni",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/dni/pusch360/issues"
+  }
+}

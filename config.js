@@ -1,8 +1,9 @@
 require.config({
-  baseUrl: 'bower_components',
+  baseUrl: '/bower_components',
     paths: {
-        jquery: "jquery",
-        backbone: "backbone",
+        jquery: "jquery/dist/jquery",
+        backbone: "backbone-amd/backbone",
+        underscore: "underscore-amd/underscore",
         cs: "coffee-script/index"
     },
     packages: [
@@ -22,4 +23,4 @@ require.config({
     ]
 });
 
-require(['cs!coffee/main.coffee']);
+require(['cs!/lib/main.coffee']);

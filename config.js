@@ -2,6 +2,7 @@ require.config({
   baseUrl: '/bower_components',
     paths: {
         jquery: "jquery/dist/jquery",
+        "jquery.ui": "jquery-ui/jquery-ui",
         backbone: "backbone-amd/backbone",
         underscore: "underscore-amd/underscore",
         cs: "coffee-script/index"

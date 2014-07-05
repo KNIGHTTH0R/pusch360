@@ -5,6 +5,11 @@ app = express()
 async = require "async"
 mongoose = require "mongoose"
 Schema = mongoose.Schema
+bodyParser = require('body-parser')
+
+app.use bodyParser.urlencoded extended:true
+app.use bodyParser.json()
+app.use express.static __dirname+'/'
 
 db = mongoose.connect 'mongodb://localhost/pusch360'
 fs = require 'fs'
@@ -32,19 +37,19 @@ showGallery = (req, res)->
     gallery = gallery[0]
     Step.find(_id: $in: gallery.steps).execFind (err, steps)->
       Hotspot.find(_id: $in: gallery.hotspots).execFind (err, hotspots)->
+        console.log "hotties", hotspots
         res.send ejs.render fs.readFileSync("./gallery.html", "utf8"),
           config:
             dir: gallery.dir
             steps: steps
             hotspots: hotspots
 
-app.use express.static __dirname+'/'
-
-
 app.get "/gallery/:dir", showGallery
 
+# root - overview
 app.get "/", (req, res)->
   res.sendfile process.cwd()+'/index.html'
+
 
 app.get "/gallery/:dir/steps", (req, res)->
   Step.find(dir: dir).execFind (err, steps)->
@@ -55,40 +60,53 @@ app.put "/gallery/:dir/steps/:id", (req, res)->
     console.log "updateSteps"
     res.send steps
 
+
+#hotspot action!!
 app.get "/gallery/:dir/hotspots", (req, res)->
-  Hotspots.find(dir: dir).execFind (err, hotspots)->
+  Hotspot.find(dir: dir).execFind (err, hotspots)->
     res.send hotspots
 
-app.post "/gallery/:dir/hotspots/:id", (req, res)->
-  Hotspots.findById(req.params.id).execFind (err, hotspot)->
-    console.log req.body, hotspot
-    res.send hotspots
+app.post "/gallery/:dir/hotspots", (req, res)->
+  dir = req.params.dir
+  Gallery.findOne(dir: dir).execFind (err, gallery)->
+    return if gallery.length is 0
+    gallery = gallery[0]
+    hotspot = new Hotspot()
+    hotspot.dir = req.params.dir
+    hotspot.title = req.body.title
+    hotspot.content = req.body.content
+    hotspot.save ->
+      gallery.hotspots.push hotspot._id
+      gallery.save ->
+        res.send hotspot
+
 
 app.put "/gallery/:dir/hotspots/:id", (req, res)->
-  Hotspots.findById(req.params.id).execFind (err, hotspot)->
+  Hotspot.findById(req.params.id).execFind (err, hotspot)->
     console.log req.body, hotspot, "updateSteps"
-    res.send hotspots
+    res.send hotspot
 
 app.delete "/gallery/:dir/hotspots/:id", (req, res)->
   Hotspots.findById(req.params.id).execFind (err, hotspot)->
-    console.log req.body, hotspot
-    res.send hotspots
+    res.send 'deleted'
 
 
+# download
 app.get "/downloadGallery/:dir", (req, res)->
   Gallery.findOne(dir: req.params.dir).exec (err, gallery)->
-      if err
+    if err
+      res.statusCode = 500
+      res.end()
+    spawn = require("child_process").spawn
+    zip = spawn("zip", ["-r", "-", gallery.dir], cwd: "./360images/")
+    res.contentType "zip"
+    zip.stdout.on "data", (data) -> res.write data
+    zip.on "exit", (code) ->
+      if code isnt 0
         res.statusCode = 500
-        res.end()
-      spawn = require("child_process").spawn
-      zip = spawn("zip", ["-r", "-", gallery.dir], cwd: "./360images/")
-      res.contentType "zip"
-      zip.stdout.on "data", (data) -> res.write data
-      zip.on "exit", (code) ->
-        if code isnt 0
-          res.statusCode = 500
-        res.end()
+      res.end()
 
+# init
 app.get "/initGallery/:dir", (req, res)->
   dir = req.params.dir
   gallery = new Gallery()
@@ -99,7 +117,6 @@ app.get "/initGallery/:dir", (req, res)->
 
     # save gallery after init
     doneStepping = (err)->
-      console.log gallery
       gallery.save ->
         showGallery req, res
 
@@ -125,7 +142,7 @@ app.get "/initGallery/:dir", (req, res)->
       return if err
       async.each files, stepping, doneStepping
 
-
+# reset
 app.get "/resetGallery/:dir", (req, res)->
   dir = req.params.dir
   Gallery.findOne(dir: dir).execFind (err, gallery)->

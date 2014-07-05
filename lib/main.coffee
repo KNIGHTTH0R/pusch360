@@ -2,25 +2,39 @@ require [
   'backbone'
   'underscore'
   'jquery'
+  'jquery.ui'
   'less!/main.less'
 ], (Backbone, _, $)->
 
   class Hotspot extends Backbone.Model
+    idAttribute: '_id'
     defaults:
-      title:"hotspot1"
+      title: "hotspot1"
+      content:"<h1>html content</h1>"
 
   class Hotspots extends Backbone.Collection
-    url: "hotspots"
+    url: window.location.pathname+"/hotspots"
     model: Hotspot
 
   class HotspotView extends Backbone.View
     className: "hotspot"
-    template: _.template '<div class="<%= title %>"><h1><%= title %></h1><p><%= content %></p></div>'
+
+    initialize: ->
+      @$el.bind "dblclick", ->
+        $(@).toggleClass("active")
+
+
+    template: _.template '<h2><%= title %></h2><p><%= content %></p>'
     render: ->
+      @$el.addClass @model.get "title"
       @$el.html @template @model.toJSON()
+
+      @$el.draggable()
+
       @
 
   class Step extends Backbone.Model
+    idAttribute: '_id'
 
   class Steps extends Backbone.Collection
     url: "steps"
@@ -35,6 +49,21 @@ require [
 
   class AppView extends Backbone.View
 
+    el:"#app"
+
+    events:
+      "click #newHotspot": "newHotspot"
+
+    newHotspot: ->
+      that = @
+      model = new Hotspot
+      model.set
+        title: $("#hotspot-title").val()
+        content: $("#hotspot-content").val()
+      @Hotspots.create model,
+        success:->
+          that.addOneHS model
+
     initialize:(args)->
       @el = $ args.selector
       @Steps = new Steps
@@ -43,18 +72,18 @@ require [
       @listenTo @Hotspots, 'reset', @addAllHS
       @Steps.reset args.config.steps
       @Hotspots.reset args.config.hotspots
-      input = $ '<input class="pusch360control" type="range" step="1" value="0" min="0" max="'+@Steps.models.length+'" />'
+      input = $ '<input class="pusch360control" type="range" step="1" value="1" min="1" max="'+@Steps.models.length+'" />'
       input.on 'mousemove change', el: @el, @changeRange
-      # @el.on 'change', @
-      @el.parent().append input
+      @el.parent().prepend input
 
     changeRange:(e)->
-      val = $(e.target).val() || 1
-      topelement = e.data.el.find(":nth-child("+val+")");
-      if topelement.hasClass "active" then return
-      e.data.el.find(".step").removeClass("active").hide()
+      val = $(e.target).val()
+      topelement = e.data.el.find ":nth-child("+val+")"
+      return if topelement.hasClass "active"
+      e.data.el.find(".step").removeClass("active")
+      topelement.addClass('active').show()
+      e.data.el.find(".step:not(.active)").hide()
       # e.data.e.trigger "change"
-      topelement.addClass().show()
 
     addOne: (model)->
       view = new StepView model: model
@@ -65,7 +94,7 @@ require [
 
     addOneHS: (model)->
       view = new HotspotView model: model
-      @el.append view.render().el
+      $('#hotspots').append view.render().el
 
     addAllHS: ->
       @Hotspots.each @addOneHS, @

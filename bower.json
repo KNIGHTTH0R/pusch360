@@ -26,6 +26,8 @@
     "require-cs": "~0.4.4",
     "require-less": "~0.1.2",
     "requirejs-text": "~2.0.12",
-    "underscore-amd": "~1.5.2"
+    "underscore-amd": "~1.5.2",
+    "jquery.ui": "~1.11.0",
+    "jquery-ui": "~1.11.0"
   }
 }

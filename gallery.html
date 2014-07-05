@@ -29,12 +29,23 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <h1>Hello! What your looking at is a astonishingly amazing 360 Image Editor made out of pure passion.</h1>
-        <div id="show"></div>
-        <div id="hotspots"></div>
-        <script id="hotspot" type="text/template">
-            hotspot ned laung
-        </script>
+        <div id="app">
+
+            <h1>Hello! What your looking at is a astonishingly amazing 360 Image Editor made out of pure passion.</h1>
+            <div class="form-group">
+                <input type="text" name="hotspot-title" id="hotspot-title" placeholder="Title *" />
+            </div>
+            <div class="form-group">
+                <textarea rows="5" name="hotspot-content" id="hotspot-content">Content *</textarea>
+            </div>
+            <div class="form-group">
+                <input type="button" name="newHotspot" id="newHotspot" value="New Hotspot" />
+            </div>
+            <div class="gallery-container">
+                <div id="show"></div>
+                <div id="hotspots"></div>
+            </div>
+        </div>
         <script>
             window.Pusch360Plugins = [];
             window.Pusch360Plugins.push({selector: '#show', config: <%-JSON.stringify(config)%>});

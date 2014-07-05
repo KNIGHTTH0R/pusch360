@@ -6,12 +6,41 @@ h1 {font-size:62px;line-height:1.1;}
   top:0
   left:0;
   img {
-    width:500px;
-    height:300px;
+    width:1000px;
+    height:700px;
   }
 }
+input[type=range] {
+  width:500px;
+}
+#hotspots {
+  position:relative;z-index:1000;
+}
 
-#show {position:relative;
-    width:500px;
-    height:300px;
+.hotspot {
+  &::before {
+    content:"+";
+    color:white;
+    font-size:21px;
+    line-height:1;
+  }
+  background: green;
+  border:3px solid white;
+  box-shadow: 0 0 3px rgba(0,0,0,.3);
+  color: white;
+  font-size: 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1000;
+  padding:2px 8px 0;
+  display: inline-block;
+  > * {display:none;}
+  &.active > * {display:block;background:none;}
+}
+
+.gallery-container {
+  position:relative;
+    width:1000px;
+    height:700px;
 }

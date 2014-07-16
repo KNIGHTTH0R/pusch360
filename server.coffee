@@ -44,7 +44,7 @@ showGallery = (req, res)->
             steps: steps
             hotspots: hotspots
 
-app.get "/gallery/:dir", showGallery
+app.get "/show/:dir", showGallery
 
 # root - overview
 app.get "/", (req, res)->
@@ -92,7 +92,7 @@ app.delete "/gallery/:dir/hotspots/:id", (req, res)->
 
 
 # download
-app.get "/downloadGallery/:dir", (req, res)->
+app.get "/download/:dir", (req, res)->
   Gallery.findOne(dir: req.params.dir).exec (err, gallery)->
     if err
       res.statusCode = 500
@@ -107,18 +107,18 @@ app.get "/downloadGallery/:dir", (req, res)->
       res.end()
 
 # init
-app.get "/initGallery/:dir", (req, res)->
+app.get "/init/:dir", (req, res)->
   dir = req.params.dir
   gallery = new Gallery()
   Gallery.findOne(dir: dir).execFind (err, galleryExists)->
     if galleryExists.length
       console.log galleryExists, "galleryExists"
-      return showGallery req, res
+      return res.send "already done init before, try /show/:dir forsowing and /reset/:dir for reseting"
 
     # save gallery after init
     doneStepping = (err)->
       gallery.save ->
-        showGallery req, res
+        res.send "done init, try /show/:dir"
 
     # create new steps for each jpg
     stepping = (file, callback)->
@@ -143,7 +143,7 @@ app.get "/initGallery/:dir", (req, res)->
       async.each files, stepping, doneStepping
 
 # reset
-app.get "/resetGallery/:dir", (req, res)->
+app.get "/reset/:dir", (req, res)->
   dir = req.params.dir
   Gallery.findOne(dir: dir).execFind (err, gallery)->
     return res.send "gallery doesnt exists" if gallery.length is 0

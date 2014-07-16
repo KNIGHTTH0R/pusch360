@@ -20,17 +20,27 @@ require [
     className: "hotspot"
 
     initialize: ->
+      @$el.bind "dragstop", (e)->
+        console.log e
       @$el.bind "dblclick", ->
         $(@).toggleClass("active")
 
 
-    template: _.template '<h2><%= title %></h2><p><%= content %></p>'
+    template: _.template '<div><h2><%= title %></h2><p><%= content %></p></div>'
+
+    setPosition:(top, left)->
+      @$el.css
+        top:top
+        left:left
+
+    getPosition:->
+      top: @$el.css "top"
+      left: @$el.css "left"
+
     render: ->
       @$el.addClass @model.get "title"
       @$el.html @template @model.toJSON()
-
       @$el.draggable()
-
       @
 
   class Step extends Backbone.Model
@@ -43,6 +53,8 @@ require [
   class StepView extends Backbone.View
     className: "step"
     template: _.template '<img src="/360images/<%= dir %>/<%= image %>" />'
+    initialize:->
+      @$el.attr "step-id", @model.get "_id"
     render: ->
       @$el.html @template @model.toJSON()
       @
@@ -65,6 +77,7 @@ require [
           that.addOneHS model
 
     initialize:(args)->
+      @HotspotViews = []
       @el = $ args.selector
       @Steps = new Steps
       @Hotspots = new Hotspots
@@ -73,13 +86,16 @@ require [
       @Steps.reset args.config.steps
       @Hotspots.reset args.config.hotspots
       input = $ '<input class="pusch360control" type="range" step="1" value="1" min="1" max="'+@Steps.models.length+'" />'
-      input.on 'mousemove change', el: @el, @changeRange
+      input.on 'mousemove change', {el: @el, steps: @Steps}, @changeRange
       @el.parent().prepend input
 
     changeRange:(e)->
       val = $(e.target).val()
+
       topelement = e.data.el.find ":nth-child("+val+")"
       return if topelement.hasClass "active"
+
+      step = e.data.steps.findWhere _id: topelement.attr "step-id"
       e.data.el.find(".step").removeClass("active")
       topelement.addClass('active').show()
       e.data.el.find(".step:not(.active)").hide()
@@ -94,6 +110,7 @@ require [
 
     addOneHS: (model)->
       view = new HotspotView model: model
+      @HotspotViews.push view
       $('#hotspots').append view.render().el
 
     addAllHS: ->

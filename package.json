@@ -16,7 +16,10 @@
     "url": "https://github.com/dni/pusch360/issues"
   },
   "dependencies": {
-    "express": "~4.4.5"
-
+    "async": "^0.9.0",
+    "body-parser": "^1.4.3",
+    "ejs": "^1.0.0",
+    "express": "~4.4.5",
+    "mongoose": "^3.8.13"
   }
 }

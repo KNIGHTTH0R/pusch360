@@ -32,11 +32,11 @@ Hotspot = mongoose.model 'hotspots', new Schema
 
 showGallery = (req, res)->
   dir = req.params.dir
-  Gallery.findOne(dir: dir).execFind (err, gallery)->
+  Gallery.find(dir: dir).exec (err, gallery)->
     return if gallery.length is 0
     gallery = gallery[0]
-    Step.find(_id: $in: gallery.steps).execFind (err, steps)->
-      Hotspot.find(_id: $in: gallery.hotspots).execFind (err, hotspots)->
+    Step.find(_id: $in: gallery.steps).exec (err, steps)->
+      Hotspot.find(_id: $in: gallery.hotspots).exec (err, hotspots)->
         console.log "hotties", hotspots
         res.send ejs.render fs.readFileSync("./gallery.html", "utf8"),
           config:
@@ -51,24 +51,24 @@ app.get "/", (req, res)->
   res.sendfile process.cwd()+'/index.html'
 
 
-app.get "/gallery/:dir/steps", (req, res)->
-  Step.find(dir: dir).execFind (err, steps)->
+app.get "/show/:dir/steps", (req, res)->
+  Step.find(dir: dir).exec (err, steps)->
     res.send steps
 
-app.put "/gallery/:dir/steps/:id", (req, res)->
-  Step.find(req.params_id).execFind (err, steps)->
+app.put "/show/:dir/steps/:id", (req, res)->
+  Step.find(req.params_id).exec (err, steps)->
     console.log "updateSteps"
     res.send steps
 
 
 #hotspot action!!
-app.get "/gallery/:dir/hotspots", (req, res)->
-  Hotspot.find(dir: dir).execFind (err, hotspots)->
+app.get "/show/:dir/hotspots", (req, res)->
+  Hotspot.find(dir: dir).exec (err, hotspots)->
     res.send hotspots
 
-app.post "/gallery/:dir/hotspots", (req, res)->
+app.post "/show/:dir/hotspots", (req, res)->
   dir = req.params.dir
-  Gallery.findOne(dir: dir).execFind (err, gallery)->
+  Gallery.find(dir: dir).exec (err, gallery)->
     return if gallery.length is 0
     gallery = gallery[0]
     hotspot = new Hotspot()
@@ -81,19 +81,19 @@ app.post "/gallery/:dir/hotspots", (req, res)->
         res.send hotspot
 
 
-app.put "/gallery/:dir/hotspots/:id", (req, res)->
-  Hotspot.findById(req.params.id).execFind (err, hotspot)->
+app.put "/show/:dir/hotspots/:id", (req, res)->
+  Hotspot.findById(req.params.id).exec (err, hotspot)->
     console.log req.body, hotspot, "updateSteps"
     res.send hotspot
 
-app.delete "/gallery/:dir/hotspots/:id", (req, res)->
-  Hotspots.findById(req.params.id).execFind (err, hotspot)->
+app.delete "/show/:dir/hotspots/:id", (req, res)->
+  Hotspots.findById(req.params.id).exec (err, hotspot)->
     res.send 'deleted'
 
 
 # download
 app.get "/download/:dir", (req, res)->
-  Gallery.findOne(dir: req.params.dir).exec (err, gallery)->
+  Gallery.find(dir: req.params.dir).exec (err, gallery)->
     if err
       res.statusCode = 500
       res.end()
@@ -110,7 +110,7 @@ app.get "/download/:dir", (req, res)->
 app.get "/init/:dir", (req, res)->
   dir = req.params.dir
   gallery = new Gallery()
-  Gallery.findOne(dir: dir).execFind (err, galleryExists)->
+  Gallery.find(dir: dir).exec (err, galleryExists)->
     if galleryExists.length
       console.log galleryExists, "galleryExists"
       return res.send "already done init before, try /show/:dir forsowing and /reset/:dir for reseting"
@@ -145,13 +145,13 @@ app.get "/init/:dir", (req, res)->
 # reset
 app.get "/reset/:dir", (req, res)->
   dir = req.params.dir
-  Gallery.findOne(dir: dir).execFind (err, gallery)->
+  Gallery.find(dir: dir).exec (err, gallery)->
     return res.send "gallery doesnt exists" if gallery.length is 0
     gallery = gallery[0]
-    Step.find(_id: $in: gallery.steps).execFind (err, steps)->
+    Step.find(_id: $in: gallery.steps).exec (err, steps)->
       for step in steps
         step.remove()
-    Hotspot.find(_id: $in: gallery.hotspots).execFind (err, hotspots)->
+    Hotspot.find(_id: $in: gallery.hotspots).exec (err, hotspots)->
        for spot in hotspots
         spot.remove()
     gallery.remove()

@@ -2,62 +2,15 @@ require [
   'backbone'
   'underscore'
   'jquery'
+  '../model/Steps'
+  '../model/Step'
+  '../view/StepView'
+  '../model/Hotspots'
+  '../model/Hotspot'
+  '../view/HotspotView'
   'jquery.ui'
   'less!/main.less'
-], (Backbone, _, $)->
-
-  class Hotspot extends Backbone.Model
-    idAttribute: '_id'
-    defaults:
-      title: "hotspot1"
-      content:"<h1>html content</h1>"
-
-  class Hotspots extends Backbone.Collection
-    url: window.location.pathname+"/hotspots"
-    model: Hotspot
-
-  class HotspotView extends Backbone.View
-    className: "hotspot"
-
-    initialize: ->
-      @$el.bind "dragstop", (e)->
-        console.log e
-      @$el.bind "dblclick", ->
-        $(@).toggleClass("active")
-
-
-    template: _.template '<div><h2><%= title %></h2><p><%= content %></p></div>'
-
-    setPosition:(top, left)->
-      @$el.css
-        top:top
-        left:left
-
-    getPosition:->
-      top: @$el.css "top"
-      left: @$el.css "left"
-
-    render: ->
-      @$el.addClass @model.get "title"
-      @$el.html @template @model.toJSON()
-      @$el.draggable()
-      @
-
-  class Step extends Backbone.Model
-    idAttribute: '_id'
-
-  class Steps extends Backbone.Collection
-    url: "steps"
-    model: Step
-
-  class StepView extends Backbone.View
-    className: "step"
-    template: _.template '<img src="/360images/<%= dir %>/<%= image %>" />'
-    initialize:->
-      @$el.attr "step-id", @model.get "_id"
-    render: ->
-      @$el.html @template @model.toJSON()
-      @
+], (Backbone, _, $, Steps, Step, StepView, Hotspot, Hotspots, HotspotView)->
 
   class AppView extends Backbone.View
 
@@ -120,5 +73,3 @@ require [
     new AppView
       selector: plugin.selector
       config: plugin.config
-
-  return "i'm completly fine"

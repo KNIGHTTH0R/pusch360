@@ -2,23 +2,20 @@ require [
   'backbone'
   'underscore'
   'jquery'
-  '../model/Steps'
-  '../model/Step'
-  '../view/StepView'
-  '../model/Hotspots'
-  '../model/Hotspot'
-  '../view/HotspotView'
+  'cs!/lib/model/Steps'
+  'cs!/lib/model/Step'
+  'cs!/lib/view/StepView'
+  'cs!/lib/view/ControlView'
+  'cs!/lib/model/Hotspots'
+  'cs!/lib/model/Hotspot'
+  'cs!/lib/view/HotspotView'
   'jquery.ui'
   'less!/main.less'
-], (Backbone, _, $, Steps, Step, StepView, Hotspot, Hotspots, HotspotView)->
-
+], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView)->
   class AppView extends Backbone.View
-
     el:"#app"
-
     events:
       "click #newHotspot": "newHotspot"
-
     newHotspot: ->
       that = @
       model = new Hotspot
@@ -30,7 +27,14 @@ require [
           that.addOneHS model
 
     initialize:(args)->
+      @StepViews = []
       @HotspotViews = []
+      control = new Backbone.Model
+      control.set
+        total: args.config.steps.length
+        current: 1
+      controlView = new ControlView model: control
+      controlView.on "changeStep", @changeSteps, @
       @el = $ args.selector
       @Steps = new Steps
       @Hotspots = new Hotspots
@@ -38,33 +42,30 @@ require [
       @listenTo @Hotspots, 'reset', @addAllHS
       @Steps.reset args.config.steps
       @Hotspots.reset args.config.hotspots
-      input = $ '<input class="pusch360control" type="range" step="1" value="1" min="1" max="'+@Steps.models.length+'" />'
-      input.on 'mousemove change', {el: @el, steps: @Steps}, @changeRange
-      @el.parent().prepend input
-
-    changeRange:(e)->
-      val = $(e.target).val()
-
-      topelement = e.data.el.find ":nth-child("+val+")"
-      return if topelement.hasClass "active"
-
-      step = e.data.steps.findWhere _id: topelement.attr "step-id"
-      e.data.el.find(".step").removeClass("active")
-      topelement.addClass('active').show()
-      e.data.el.find(".step:not(.active)").hide()
-      # e.data.e.trigger "change"
-
+     
     addOne: (model)->
+      if @StepViews.length is 0 then model.set "active", true
       view = new StepView model: model
+      @StepViews.push view
       @el.append view.render().el
 
     addAll: ->
       @Steps.each @addOne, @
 
     addOneHS: (model)->
-      view = new HotspotView model: model
+      stepModel = @Steps.first()
+      view = new HotspotView model: model, currentStep: stepModel.get("_id")
       @HotspotViews.push view
       $('#hotspots').append view.render().el
+
+    changeSteps:(step)->
+      activeStep = @Steps.findActive()
+      newStep = @Steps.findWhere _id: step
+      newStep.set("active", true)
+      activeStep.set("active", false)
+
+      for view in @HotspotViews
+        view.changeCurrentStep(step)
 
     addAllHS: ->
       @Hotspots.each @addOneHS, @

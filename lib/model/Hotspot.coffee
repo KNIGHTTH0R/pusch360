@@ -1,4 +1,4 @@
-require [
+define [
   'backbone'
   'underscore'
 ], (Backbone, _)->
@@ -8,3 +8,4 @@ require [
     defaults:
       title: "hotspot1"
       content:"<h1>html content</h1>"
+      positions: {}

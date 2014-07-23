@@ -1,7 +1,8 @@
-require [
+define [
   'backbone'
   'underscore'
-], (Backbone, _)->
+  'cs!/lib/model/Hotspot'
+], (Backbone, _, Hotspot)->
 
   class Hotspots extends Backbone.Collection
     url: window.location.pathname+"/hotspots"

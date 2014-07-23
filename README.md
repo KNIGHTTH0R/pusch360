@@ -41,16 +41,16 @@ show if its working
 * http://localhost:6166/
 
 initialize a gallery
-* http://localhost:6166/initGallery/dirName
+* http://localhost:6166/init/dirName
 
 delete/reset a gallery
-* http://localhost:6166/resetGallery/dirName
+* http://localhost:6166/reset/dirName
 
 view a gallery
-* http://localhost:6166/gallery/dirName
+* http://localhost:6166/show/dirName
 
 download a gallery
-* http://localhost:6166/downloadGallery/dirName
+* http://localhost:6166/download/dirName
 
 # how to include on your website
 

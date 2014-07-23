@@ -1,6 +1,8 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
-body {font-family:"Open Sans";font-weight:300;}
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:300");
+body {font-family:Open Sans;font-weight:300;}
 h1 {font-size:62px;line-height:1.1;}
+
+
 .step {
   position:absolute;
   top:0;
@@ -9,6 +11,7 @@ h1 {font-size:62px;line-height:1.1;}
     width:1000px;
   }
 }
+
 input[type=range] {
   width: 1000px;
   position: absolute;
@@ -22,6 +25,7 @@ input[type=range] {
 }
 
 .hotspot {
+  position:absolute!important;
   img {width:100%;}
   &::before {
     content:"+";

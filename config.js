@@ -5,17 +5,20 @@ require.config({
         "jquery.ui": "jquery-ui/jquery-ui",
         backbone: "backbone-amd/backbone",
         underscore: "underscore-amd/underscore",
-        cs: "coffee-script/index"
     },
     packages: [
       {
+        name: 'cs',
+        location: 'require-cs',
+        main: 'cs'
+       },{
         name: 'less',
         location: 'require-less',
         main: 'less'
       },{
         name: 'coffee-script',
-        location: 'require-cs',
-        main: 'coffee-script'
+        location: 'coffee-script',
+        main: 'index'
       },{
         name: 'text',
         location: 'requirejs-text',
@@ -24,4 +27,5 @@ require.config({
     ]
 });
 
-require(['cs!/lib/main.coffee']);
+require(['cs!/lib/App.coffee']);
+

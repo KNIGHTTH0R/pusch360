@@ -1,26 +1,40 @@
-require [
+define [
   'backbone'
   'underscore'
-], (Backbone, _)->
+  'text!/lib/templates/hotspot.html'
+], (Backbone, _, Template)->
   class HotspotView extends Backbone.View
     className: "hotspot"
 
-    initialize: ->
-      @$el.bind "dragstop", (e)->
-        console.log e
+    initialize:(args) ->
+      @rePosition()
+      @$el.bind "dragstop", @setCurrentPosition.bind(@)
       @$el.bind "dblclick", ->
         $(@).toggleClass("active")
 
-    template: _.template '<div><h2><%= title %></h2><p><%= content %></p></div>'
+    template: _.template Template
 
-    setPosition:(top, left)->
+    changeCurrentStep:(step)->
+      @currentStep = step
+      @rePosition()
+
+    rePosition:->
+      @checkStep()
       @$el.css
-        top:top
-        left:left
+        top: @model.attributes.positions[@currentStep].x
+        left: @model.attributes.positions[@currentStep].y
 
-    getPosition:->
-      top: @$el.css "top"
-      left: @$el.css "left"
+    checkStep:->
+      unless @model.attributes.positions[@currentStep]?
+        @model.attributes.positions[@currentStep] =
+          x: "1px"
+          y: "1px"
+
+    setCurrentPosition:->
+      @checkStep()
+      @model.attributes.positions[@currentStep].x = @$el.css "top"
+      @model.attributes.positions[@currentStep].y = @$el.css "left"
+      @model.save()
 
     render: ->
       @$el.addClass @model.get "title"

@@ -9,7 +9,7 @@ bodyParser = require('body-parser')
 
 app.use bodyParser.urlencoded extended:true
 app.use bodyParser.json()
-app.use express.static __dirname+'/'
+app.use express.static __dirname
 
 db = mongoose.connect 'mongodb://localhost/pusch360'
 fs = require 'fs'
@@ -29,6 +29,7 @@ Hotspot = mongoose.model 'hotspots', new Schema
   dir : String
   title : String
   content : String
+  positions: Object
 
 showGallery = (req, res)->
   dir = req.params.dir
@@ -52,18 +53,18 @@ app.get "/", (req, res)->
 
 
 app.get "/show/:dir/steps", (req, res)->
-  Step.find(dir: dir).exec (err, steps)->
+  Step.find(dir: req.params.dir).exec (err, steps)->
     res.send steps
 
 app.put "/show/:dir/steps/:id", (req, res)->
-  Step.find(req.params_id).exec (err, steps)->
+  Step.find(req.params.id).exec (err, steps)->
     console.log "updateSteps"
     res.send steps
 
 
 #hotspot action!!
 app.get "/show/:dir/hotspots", (req, res)->
-  Hotspot.find(dir: dir).exec (err, hotspots)->
+  Hotspot.find(dir: req.params.dir).exec (err, hotspots)->
     res.send hotspots
 
 app.post "/show/:dir/hotspots", (req, res)->
@@ -75,6 +76,7 @@ app.post "/show/:dir/hotspots", (req, res)->
     hotspot.dir = req.params.dir
     hotspot.title = req.body.title
     hotspot.content = req.body.content
+    hotspot.positions = req.body.positions
     hotspot.save ->
       gallery.hotspots.push hotspot._id
       gallery.save ->
@@ -83,8 +85,12 @@ app.post "/show/:dir/hotspots", (req, res)->
 
 app.put "/show/:dir/hotspots/:id", (req, res)->
   Hotspot.findById(req.params.id).exec (err, hotspot)->
-    console.log req.body, hotspot, "updateSteps"
-    res.send hotspot
+    hotspot.dir = req.params.dir
+    hotspot.title = req.body.title
+    hotspot.content = req.body.content
+    hotspot.positions = req.body.positions
+    hotspot.save ->
+      res.send hotspot
 
 app.delete "/show/:dir/hotspots/:id", (req, res)->
   Hotspots.findById(req.params.id).exec (err, hotspot)->

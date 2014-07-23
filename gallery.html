@@ -9,7 +9,6 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script type="text/javascript" data-main="/config" src="/bower_components/requirejs/require.js"></script>
 
         <!--
             .    ___           ___  ___           ___
@@ -30,7 +29,6 @@
 
         <!-- Add your site or application content here -->
         <div id="app">
-
             <h1>Hello! What your looking at is a astonishingly amazing 360 Image Editor made out of pure passion.</h1>
             <div class="form-group">
                 <input type="text" name="hotspot-title" id="hotspot-title" placeholder="Title *" />
@@ -41,14 +39,16 @@
             <div class="form-group">
                 <input type="button" name="newHotspot" id="newHotspot" value="New Hotspot" />
             </div>
+            <div class="controls"></div>
             <div class="gallery-container">
-                <div id="show"></div>
+                <div class="show"></div>
                 <div id="hotspots"></div>
             </div>
         </div>
+        <script type="text/javascript" data-main="/config.js" src="/bower_components/requirejs/require.js"></script>
         <script>
             window.Pusch360Plugins = [];
-            window.Pusch360Plugins.push({selector: '#show', config: <%-JSON.stringify(config)%>});
+            window.Pusch360Plugins.push({selector: '.show', config: <%-JSON.stringify(config)%>});
          </script>
     </body>
 </html>

@@ -1,7 +1,7 @@
 define [
   'backbone'
   'underscore'
-  'cs!/lib/model/Hotspot'
+  'cs!model/Hotspot'
 ], (Backbone, _, Hotspot)->
 
   class Hotspots extends Backbone.Collection

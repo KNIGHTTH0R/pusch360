@@ -2,29 +2,17 @@ require [
   'backbone'
   'underscore'
   'jquery'
-  'cs!/lib/model/Steps'
-  'cs!/lib/model/Step'
-  'cs!/lib/view/StepView'
-  'cs!/lib/view/ControlView'
-  'cs!/lib/model/Hotspots'
-  'cs!/lib/model/Hotspot'
-  'cs!/lib/view/HotspotView'
-  'text!/lib/templates/app.html'
-  'jquery.ui'
-  'less!/main.less'
+  'cs!model/Steps'
+  'cs!model/Step'
+  'cs!view/StepView'
+  'cs!view/ControlView'
+  'cs!model/Hotspots'
+  'cs!model/Hotspot'
+  'cs!view/HotspotView'
+  'text!templates/app.html'
+  'jquery-ui'
 ], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, Template)->
   class AppView extends Backbone.View
-    events:
-      "click #newHotspot": "newHotspot"
-    newHotspot: ->
-      that = @
-      model = new Hotspot
-      model.set
-        title: $("#hotspot-title").val()
-        content: $("#hotspot-content").val()
-      @Hotspots.create model,
-        success:->
-          that.addOneHS model
 
     initialize:(args)->
       @StepViews = []

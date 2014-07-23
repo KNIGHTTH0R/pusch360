@@ -1,31 +1,25 @@
 require.config({
-  baseUrl: '/bower_components',
-    paths: {
-        jquery: "jquery/dist/jquery",
-        "jquery.ui": "jquery-ui/jquery-ui",
-        backbone: "backbone-amd/backbone",
-        underscore: "underscore-amd/underscore",
-    },
+    baseUrl: '/lib',
     packages: [
       {
         name: 'cs',
-        location: 'require-cs',
+        location: '.',
         main: 'cs'
        },{
         name: 'less',
-        location: 'require-less',
+        location: '.',
         main: 'less'
       },{
         name: 'coffee-script',
-        location: 'coffee-script',
-        main: 'index'
+        location: '.',
+        main: 'coffee-script'
       },{
         name: 'text',
-        location: 'requirejs-text',
+        location: '.',
         main: 'text'
       }
     ]
 });
 
-require(['cs!/lib/App.coffee']);
+require(['app']);
 

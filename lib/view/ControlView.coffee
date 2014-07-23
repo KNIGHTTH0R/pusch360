@@ -1,7 +1,7 @@
 define [
   'backbone'
   'underscore'
-  'text!/lib/templates/controls.html'
+  'text!templates/controls.html'
 ], (Backbone,_, Template)->
   class ControlView extends Backbone.View
     el: ".controls"

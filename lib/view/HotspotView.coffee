@@ -1,7 +1,7 @@
 define [
   'backbone'
   'underscore'
-  'text!/lib/templates/hotspot.html'
+  'text!templates/hotspot.html'
 ], (Backbone, _, Template)->
   class HotspotView extends Backbone.View
     className: "hotspot"

@@ -1,7 +1,7 @@
 define [
   'backbone'
   'underscore'
-  'text!/lib/templates/step.html'
+  'text!templates/step.html'
 ], (Backbone, _, Template)->
   class StepView extends Backbone.View
     template: _.template Template

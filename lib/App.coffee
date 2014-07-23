@@ -9,11 +9,11 @@ require [
   'cs!/lib/model/Hotspots'
   'cs!/lib/model/Hotspot'
   'cs!/lib/view/HotspotView'
+  'text!/lib/templates/app.html'
   'jquery.ui'
   'less!/main.less'
-], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView)->
+], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, Template)->
   class AppView extends Backbone.View
-    el:"#app"
     events:
       "click #newHotspot": "newHotspot"
     newHotspot: ->

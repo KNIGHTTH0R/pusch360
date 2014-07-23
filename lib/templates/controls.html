@@ -1,6 +1,5 @@
-<span class="current"><%= current %></span>
-<span class="totals"><%= total %></span>
-<span class="btn prev-step">back</span>
-<span class="btn next-step">next</span>
-<input type="text" class="jumpto" value="1"/> 
-<input type="range" />
+<label>Total: <span class="totals"><%= total %></span></label>
+<input type="button" class="btn prev-step" value="back"/>
+<input type="button" class="btn next-step" value="next"/>
+<input type="text" class="jumpto" value="<%= current %>"/> 
+<input type="range" class="rangeControl" value="<%= current %>" step="1" min="1" max="<%= total %>"/>

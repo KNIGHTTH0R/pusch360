@@ -2,15 +2,14 @@ require [
   'backbone'
   'underscore'
   'jquery'
-  'cs!/lib/model/Steps'
-  'cs!/lib/model/Step'
-  'cs!/lib/view/StepView'
-  'cs!/lib/view/ControlView'
-  'cs!/lib/model/Hotspots'
-  'cs!/lib/model/Hotspot'
-  'cs!/lib/view/HotspotView'
-  'jquery.ui'
-  'less!/main.less'
+  'cs!model/Steps'
+  'cs!model/Step'
+  'cs!view/StepView'
+  'cs!view/ControlView'
+  'cs!model/Hotspots'
+  'cs!model/Hotspot'
+  'cs!view/HotspotView'
+  'jquery-ui'
 ], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView)->
   class AppView extends Backbone.View
     el:"#app"

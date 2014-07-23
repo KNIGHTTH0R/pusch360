@@ -1,7 +1,7 @@
 define [
   'backbone'
   'underscore'
-  'cs!/lib/model/Step'
+  'cs!model/Step'
 ], (Backbone, _, Step)->
   class Steps extends Backbone.Collection
     url: window.location.pathname+"/steps"

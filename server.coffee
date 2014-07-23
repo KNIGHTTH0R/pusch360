@@ -37,7 +37,6 @@ showGallery = (req, res)->
     gallery = gallery[0]
     Step.find(_id: $in: gallery.steps).exec (err, steps)->
       Hotspot.find(_id: $in: gallery.hotspots).exec (err, hotspots)->
-        console.log "hotties", hotspots
         res.send ejs.render fs.readFileSync("./gallery.html", "utf8"),
           config:
             dir: gallery.dir

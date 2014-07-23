@@ -61,7 +61,7 @@ require [
       activeStep = @Steps.findActive()
       newStep = @Steps.findWhere _id: step
       newStep.set("active", true)
-      activeStep.set("active", false)
+      activeStep?.set("active", false)
 
       for view in @HotspotViews
         view.changeCurrentStep(step)

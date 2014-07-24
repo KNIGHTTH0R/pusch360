@@ -1,4 +1,4 @@
-require [
+define [
   'backbone'
   'underscore'
   'jquery'
@@ -11,7 +11,6 @@ require [
   'cs!view/HotspotView'
   'text!templates/app.html'
   'jquery-ui'
-  'less!style.less'
 ], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, Template)->
   class AppView extends Backbone.View
 

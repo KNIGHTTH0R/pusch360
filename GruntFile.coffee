@@ -21,18 +21,19 @@ module.exports = (grunt) ->
     requirejs:
       frontend:
         options:
+          baseUrl : './lib'
+          name : './almond'
+          include: ['../config']
+          findNestedDependencies: true,
+          insertRequire: ['../config']
+          # optimizeAllPluginResources: false,
+          stubModules: ['less', 'text', 'cs'],
           wrap: true
-          waitSeconds : 0,
-          baseUrl : './lib',
-          name : './almond',
-          include: ['app'],
-          insertRequire: ['app'],
-          mainConfigFile : ['config.js'],
-          out : 'build.min.js',
+          out : 'build.min.js'
           optimize : 'none',
-          generateSourceMaps : false
-          preserveLicenseComments : false
-          inlineText : true
+          # generateSourceMaps : false
+          # preserveLicenseComments : false
+          # inlineText : true
 
   grunt.registerTask "initGallery", ->
     fs.readdir '360images', (err, files) ->

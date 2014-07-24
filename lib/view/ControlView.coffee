@@ -25,12 +25,9 @@ define [
       @$el.html @template @model.toJSON()
       @
 
-
-
     initialize:()->
       window.addEventListener "mouseup", @endSlide.bind(@)
       window.addEventListener "mousemove", @slideImages.bind(@)
-
       # @model.on "change", @render, @
       # @render()
 

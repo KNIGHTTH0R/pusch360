@@ -11,6 +11,14 @@ define [
       "keyup .jumpto": "jumpTo"
       "mousemove .rangeControl": "range"
 
+      "mousedown .slidearea": "startSlide"
+      #"mouseout .slidearea": "endSlide"
+      "mouseup .slidearea": "endSlide"
+      "mousemove .slidearea": "slideImages"
+      "dragstart .slidearea": "startSlide"
+      "dragend .slidearea": "endSlide"
+      "drag .slidearea": "slideImages"
+
     template: _.template Template
 
     render:->
@@ -21,6 +29,26 @@ define [
       console.log
       # @model.on "change", @render, @
       # @render()
+
+    slideImages: (e)->
+      tresh = 30
+      if @isDrag isnt true then return
+      thisPos = e.pageX || e.screenX
+      diff = @dragPos - thisPos
+      if diff>tresh
+        @prevStep()
+        @dragPos = thisPos
+      else if diff<-tresh
+        @nextStep()
+        @dragPos = thisPos
+      else console.log diff, @dragPos
+
+    startSlide: (e)->
+      @dragPos = e.pageX || e.screenX
+      @isDrag = true
+
+    endSlide: (e)->
+      @isDrag = false
 
     prevStep:->
       changefrom = parseInt @model.get "current"

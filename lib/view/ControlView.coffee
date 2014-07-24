@@ -23,28 +23,23 @@ define [
       # @render()
 
     prevStep:->
-      changefrom = parseInt(@model.get("current"))
+      changefrom = parseInt @model.get "current"
       @changeStep changefrom-1
 
     nextStep:->
-      changefrom = parseInt(@model.get("current"))
+      changefrom = parseInt @model.get "current"
       @changeStep changefrom+1
 
     range:->
-      el = @$el.find(".rangeControl")
-      # return if el.val() is @model.get("current")
-      # if el.val() is parseInt(@model.get("total"))+1
-      #   el.val(1)
-      # if el.val() is 0
-        # el.val(@model.get("total"))
-      @changeStep el.val()
+      elVal = parseInt @$el.find(".rangeControl").val()
+      return if elVal is @model.get "current"
+      @changeStep elVal
 
     jumpTo:->
-      console.log "jumpto"
       @changeStep @$el.find(".jumpto").val()
 
     changeStep:(stepNumber)->
-      total = parseInt(@model.get("total"))
+      total = parseInt @model.get "total"
       if stepNumber < 1 then stepNumber = total
       if stepNumber > total then stepNumber = 1
       @model.set "current", stepNumber

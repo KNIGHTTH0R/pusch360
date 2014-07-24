@@ -124,7 +124,6 @@ app.get "/init/:dir", (req, res)->
   gallery = new Gallery()
   Gallery.find(dir: dir).exec (err, galleryExists)->
     if galleryExists.length
-      console.log galleryExists, "galleryExists"
       return res.send "already done init before, try /show/:dir forsowing and /reset/:dir for reseting"
 
     # save gallery after init
@@ -147,7 +146,6 @@ app.get "/init/:dir", (req, res)->
     # new gallery
     gallery.dir = dir
     gallery.date = new Date()
-    console.log 'creating new gallery: '+gallery.dir
 
     dirName = '360images/'+dir+'/'
     fs.readdir dirName, (err, files) ->

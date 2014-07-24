@@ -10,6 +10,7 @@ module.exports = (grunt) ->
           "jquery.js": "jquery/dist/jquery.js"
           "require.js": "requirejs/require.js"
           "jquery.ui.js": "jquery-ui/ui/jquery-ui.js"
+          "almond.js": "almond/almond.js"
           "underscore.js": "underscore-amd/underscore.js"
           "backbone.js": "backbone-amd/backbone.js"
           "text.js": 'requirejs-text/text.js'
@@ -20,9 +21,10 @@ module.exports = (grunt) ->
     requirejs:
       frontend:
         options:
+          wrap: true
           waitSeconds : 0,
           baseUrl : './lib',
-          name : '../bower_components/almond/almond',
+          name : './almond',
           include: ['app'],
           insertRequire: ['app'],
           mainConfigFile : ['config.js'],
@@ -31,7 +33,6 @@ module.exports = (grunt) ->
           generateSourceMaps : false
           preserveLicenseComments : false
           inlineText : true
-          findNestedDependencies : true
 
   grunt.registerTask "initGallery", ->
     fs.readdir '360images', (err, files) ->

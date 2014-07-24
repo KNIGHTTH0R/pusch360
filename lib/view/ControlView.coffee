@@ -4,7 +4,6 @@ define [
   'text!templates/controls.html'
 ], (Backbone,_, Template)->
   class ControlView extends Backbone.View
-    el: ".controls"
 
     events:
       "click .prev-step": "prevStep"
@@ -12,21 +11,25 @@ define [
       "keyup .jumpto": "jumpTo"
       "mousemove .rangeControl": "range"
 
+    template: _.template Template
+
     render:->
-      @$el.html _.template Template, @model.toJSON() 
-    
+      @$el.html @template @model.toJSON()
+      @
+
     initialize:(args)->
+      console.log
       # @model.on "change", @render, @
-      @render()
-    
+      # @render()
+
     prevStep:->
-      changefrom = parseInt(@model.get("current")) 
+      changefrom = parseInt(@model.get("current"))
       @changeStep changefrom-1
-    
+
     nextStep:->
-      changefrom = parseInt(@model.get("current")) 
+      changefrom = parseInt(@model.get("current"))
       @changeStep changefrom+1
-      
+
     range:->
       el = @$el.find(".rangeControl")
       # return if el.val() is @model.get("current")
@@ -37,6 +40,7 @@ define [
       @changeStep el.val()
 
     jumpTo:->
+      console.log "jumpto"
       @changeStep @$el.find(".jumpto").val()
 
     changeStep:(stepNumber)->
@@ -46,5 +50,6 @@ define [
       @model.set "current", stepNumber
       @$el.find(".jumpto").val(stepNumber)
       @$el.find(".rangeControl").val(stepNumber)
-      topelement = @$el.parent().find(".step")[stepNumber-1]
+      topelement = @$el.parent().parent().find(".step")[stepNumber-1]
+
       @trigger "changeStep", $(topelement).attr "step-id"

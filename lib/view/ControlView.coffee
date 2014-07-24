@@ -25,14 +25,18 @@ define [
       @$el.html @template @model.toJSON()
       @
 
-    initialize:(args)->
-      console.log
+
+
+    initialize:()->
+      window.addEventListener "mouseup", @endSlide.bind(@)
+      window.addEventListener "mousemove", @slideImages.bind(@)
+
       # @model.on "change", @render, @
       # @render()
 
     slideImages: (e)->
-      tresh = 30
       if @isDrag isnt true then return
+      tresh = 30
       thisPos = e.pageX || e.screenX
       diff = @dragPos - thisPos
       if diff>tresh
@@ -41,19 +45,15 @@ define [
       else if diff<-tresh
         @nextStep()
         @dragPos = thisPos
-      else console.log diff, @dragPos
-
     startSlide: (e)->
       @dragPos = e.pageX || e.screenX
       @isDrag = true
-
     endSlide: (e)->
       @isDrag = false
 
     prevStep:->
       changefrom = parseInt @model.get "current"
       @changeStep changefrom-1
-
     nextStep:->
       changefrom = parseInt @model.get "current"
       @changeStep changefrom+1

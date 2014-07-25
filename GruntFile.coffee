@@ -32,9 +32,9 @@ module.exports = (grunt) ->
           out : 'build.min.js'
           optimize : 'none',
           # optimize : 'uglify2',
-          generateSourceMaps : false
-          preserveLicenseComments : false
-          inlineText : true
+          #generateSourceMaps : false
+          #preserveLicenseComments : false
+          #inlineText : true
 
   grunt.registerTask "initGallery", ->
     fs.readdir '360images', (err, files) ->

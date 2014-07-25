@@ -9,10 +9,14 @@ define [
     initialize:(args) ->
       @rePosition()
       @$el.bind "dragstop", @setCurrentPosition.bind(@)
-      @$el.bind "dblclick", ->
-        $(@).toggleClass("active")
+      @$el.bind "dblclick", @edit.bind(@)
+      # @$el.bind "dblclick", ->
+      #   $(@).toggleClass("active")
 
     template: _.template Template
+
+    edit:->
+      @trigger "editHotspot", @model
 
     changeCurrentStep:(step)->
       @currentStep = step

@@ -30,13 +30,13 @@ define [
       changefrom = parseInt @model.get "current"
       @changeStep changefrom+1
 
-    range:->
-      elVal = parseInt @$el.find(".rangeControl").val()
+    range:(e)->
+      elVal = parseInt $(e.target).val()
       return if elVal is @model.get "current"
       @changeStep elVal
 
-    jumpTo:->
-      @changeStep @$el.find(".jumpto").val()
+    jumpTo:(e)->
+      @changeStep $(e.target).val()
 
     changeStep:(stepNumber)->
       total = parseInt @model.get "total"

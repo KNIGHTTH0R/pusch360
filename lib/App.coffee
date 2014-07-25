@@ -9,10 +9,11 @@ require [
   'cs!model/Hotspots'
   'cs!model/Hotspot'
   'cs!view/HotspotView'
+  'cs!view/HotspotDetailView'
   'text!templates/app.html'
   'jquery-ui'
   'less!style.less'
-], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, Template)->
+], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, HotspotDetailView, Template)->
   class AppView extends Backbone.View
 
 
@@ -33,13 +34,14 @@ require [
       controlView.on "changeStep", @changeSteps, @
 
       @$el.find(".controls").append controlView.render().el
-
       @Steps = new Steps
-      @Hotspots = new Hotspots
       @listenTo @Steps, 'reset', @addAll
-      @listenTo @Hotspots, 'reset', @addAllHS
+      @listenTo Hotspots, 'reset', @addAllHS
       @Steps.reset args.config.steps
-      @Hotspots.reset args.config.hotspots
+      Hotspots.reset args.config.hotspots
+
+
+    initHotspotDetail: ->
 
     addOne: (model)->
       if @StepViews.length is 0 then model.set "active", true
@@ -53,6 +55,7 @@ require [
     addOneHS: (model)->
       stepModel = @Steps.first()
       view = new HotspotView model: model, currentStep: stepModel.get("_id")
+      view.on "editHotspot", @hotspotDetailView.editHotspot
       @HotspotViews.push view
       @$el.find('.hotspots').append view.render().el
 
@@ -66,7 +69,12 @@ require [
         view.changeCurrentStep(step)
 
     addAllHS: ->
-      @Hotspots.each @addOneHS, @
+      hotspotModel = Hotspots.first()
+      unless hotspotModel?
+        hotspotModel = new Hotspot
+      @hotspotDetailView = new HotspotDetailView model: hotspotModel
+      @$el.find(".editHotspot").append @hotspotDetailView.render().el
+      Hotspots.each @addOneHS, @
 
   for key, plugin of window.Pusch360Plugins
     new AppView

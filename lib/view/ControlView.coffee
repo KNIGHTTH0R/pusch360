@@ -11,23 +11,27 @@ define [
       "keyup .jumpto": "jumpTo"
       "mousemove .rangeControl": "range"
 
-      "mousedown .slidearea": "startSlide"
-      #"mouseout .slidearea": "endSlide"
-      "mouseup .slidearea": "endSlide"
-      "mousemove .slidearea": "slideImages"
-      "dragstart .slidearea": "startSlide"
-      "dragend .slidearea": "endSlide"
-      "drag .slidearea": "slideImages"
-
     template: _.template Template
+
+    keyupEvent:(e)->
+      key = e.keyCode
+      if key is 37 then @prevStep() # left cursor
+      else if key is 39 then @nextStep()# right cursor
 
     render:->
       @$el.html @template @model.toJSON()
       @
 
     initialize:()->
-      window.addEventListener "mouseup", @endSlide.bind(@)
-      window.addEventListener "mousemove", @slideImages.bind(@)
+      $(window).on "mouseup", @endSlide.bind(@)
+      $(window).on "mousemove", @slideImages.bind(@)
+      $(window).on "keyup", @keyupEvent.bind(@)
+
+      @$el.on "mousedown", @startSlide.bind(@)
+      @$el.on "mouseup", @endSlide.bind(@)
+      @$el.on "dragstart", @startSlide.bind(@)
+      @$el.on "dragend", @endSlide.bind(@)
+      @$el.on "drag", @slideImages.bind(@)
       # @model.on "change", @render, @
       # @render()
 

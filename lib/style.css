@@ -1,21 +1,10 @@
 @import url("http://fonts.googleapis.com/css?family=Open+Sans:300");
-
-@uiColor: #f06c0b;
-
 body {font-family:Open Sans;font-weight:300;}
 h1 {font-size:62px;line-height:1.1;}
-.overlay {display:none;}
-.editHotspot, .controls {
+
+.controls {
   z-index: 2;
   position: relative;
-}
-
-.editHotspot .overlay {
-  padding:12px;
-  background:@uiColor;
-  position: absolute;
-  top: 100px;
-  right:0;
 }
 
 .step {
@@ -26,6 +15,11 @@ h1 {font-size:62px;line-height:1.1;}
 
 .step img, .slidearea {
     height: 600px;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    -o-user-select: none;
+    user-select: none;
 }
 
 .slidearea {
@@ -34,6 +28,7 @@ h1 {font-size:62px;line-height:1.1;}
   cursor: ew-resize;
   width: 100%;
 }
+
 
 .rangeControl {
   width: 500px;
@@ -61,7 +56,7 @@ h1 {font-size:62px;line-height:1.1;}
     content:"+";
     color:white;
     line-height:1;
-    background: @uiColor;
+    background: #f06c0b;
     border:3px solid white;
     box-shadow: 0 0 3px rgba(0,0,0,.3);
     color: white;
@@ -86,8 +81,8 @@ h1 {font-size:62px;line-height:1.1;}
 
 .gallery-container {
   position:relative;
-    width:1000px;
-    height:700px;
+  width:1000px;
+  height:700px;
 }
 
 

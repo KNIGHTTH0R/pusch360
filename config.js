@@ -6,11 +6,7 @@ require.config({
         location: '.',
         main: 'cs'
        },{
-        name: 'less',
-        location: '.',
-        main: 'less'
-      },{
-        name: 'coffee-script',
+       	name: 'coffee-script',
         location: '.',
         main: 'coffee-script'
       },{
@@ -21,5 +17,4 @@ require.config({
     ]
 });
 
-require(['app']);
-
+require(['cs!App']);

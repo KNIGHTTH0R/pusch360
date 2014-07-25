@@ -8,6 +8,7 @@ define [
     initialize:->
       @model.on "change", @toggle, @
 
+
     toggle:->
       if @model.get "active"
         @$el.find(".step").show()

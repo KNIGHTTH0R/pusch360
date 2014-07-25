@@ -11,21 +11,46 @@ define [
       "keyup .jumpto": "jumpTo"
       "mousemove .rangeControl": "range"
 
+      "mousedown .slidearea": "startSlide"
+      #"mouseout .slidearea": "endSlide"
+      "mouseup .slidearea": "endSlide"
+      "mousemove .slidearea": "slideImages"
+      "dragstart .slidearea": "startSlide"
+      "dragend .slidearea": "endSlide"
+      "drag .slidearea": "slideImages"
+
     template: _.template Template
 
     render:->
       @$el.html @template @model.toJSON()
       @
 
-    initialize:(args)->
-      console.log
+    initialize:()->
+      window.addEventListener "mouseup", @endSlide.bind(@)
+      window.addEventListener "mousemove", @slideImages.bind(@)
       # @model.on "change", @render, @
       # @render()
+
+    slideImages: (e)->
+      if @isDrag isnt true then return
+      tresh = 30
+      thisPos = e.pageX || e.screenX
+      diff = @dragPos - thisPos
+      if diff>tresh
+        @prevStep()
+        @dragPos = thisPos
+      else if diff<-tresh
+        @nextStep()
+        @dragPos = thisPos
+    startSlide: (e)->
+      @dragPos = e.pageX || e.screenX
+      @isDrag = true
+    endSlide: (e)->
+      @isDrag = false
 
     prevStep:->
       changefrom = parseInt @model.get "current"
       @changeStep changefrom-1
-
     nextStep:->
       changefrom = parseInt @model.get "current"
       @changeStep changefrom+1

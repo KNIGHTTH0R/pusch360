@@ -5,13 +5,17 @@ define [
 ], (Backbone,_, Template)->
   class ControlView extends Backbone.View
 
+    className:'controls'
+
     events:
+      "mousedown .controls-container": "stopProp"
       "click .prev-step": "prevStep"
       "click .next-step": "nextStep"
-      "keyup .jumpto": "jumpTo"
+      "blur .jumpto": "jumpTo"
 
     template: _.template Template
-
+    stopProp:(e)->
+      e.stopPropagation()
     keyupEvent:(e)->
       key = e.keyCode
       if key is 37 then @prevStep() # left cursor
@@ -46,7 +50,6 @@ define [
         @nextStep()
         @dragPos = thisPos
     startSlide: (e)->
-      console.log "uhu"
       @dragPos = e.pageX || e.screenX
       @isDrag = true
     endSlide: (e)->

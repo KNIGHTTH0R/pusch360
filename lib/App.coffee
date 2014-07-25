@@ -35,7 +35,7 @@ define [
       controlView = new ControlView model: control
       controlView.on "changeStep", @changeSteps, @
 
-      @$el.find(".controls").append controlView.render().el
+      @$el.find(".gallery-container").append controlView.render().el
       @Steps = new Steps
       @listenTo @Steps, 'reset', @addAll
       @listenTo Hotspots, 'reset', @addAllHS
@@ -55,9 +55,14 @@ define [
     addOneHS: (model)->
       stepModel = @Steps.first()
       view = new HotspotView model: model, currentStep: stepModel.get("_id")
-      view.on "editHotspot", @hotspotDetailView.editHotspot
+      view.on "editHotspot", @switchHotspotDetailView, @
       @HotspotViews.push view
       @$el.find('.hotspots').append view.render().el
+
+    switchHotspotDetailView:(hotspot)->
+      @hotspotDetailView.model = hotspot
+      @hotspotDetailView.render()
+      @hotspotDetailView.showOverlay()
 
     changeSteps:(step)->
       activeStep = @Steps.findActive()
@@ -74,7 +79,6 @@ define [
         hotspotModel = new Hotspot
       @hotspotDetailView = new HotspotDetailView model: hotspotModel
       @hotspotDetailView.on "addHotspot", @addOneHS, @
-      @$el.find(".editHotspot").append @hotspotDetailView.render().el
       Hotspots.each @addOneHS, @
 
   for key, plugin of window.Pusch360Plugins

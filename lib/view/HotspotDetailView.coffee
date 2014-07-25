@@ -7,11 +7,15 @@ define [
 ], (Backbone, _, Template, Hotspots, Hotspot)->
   class HotspotDetailView extends Backbone.View
 
+    el:'.editHotspot'
+
+    initialize:->
+      @render()
+
     template: _.template Template
 
     render: ->
       @$el.html @template @model.toJSON()
-      @
 
     events:
       "click #newHotspot": "addHotspot"
@@ -21,8 +25,7 @@ define [
     removeHotspot:->
       @model.destroy
         success:->
-          console.log "deleted hs"
-      @$el.find(".overlay").hide()
+      @hideOverlay()
 
     saveHotspot:->
       @model.set
@@ -31,10 +34,10 @@ define [
       @model.save()
       @$el.find(".overlay").hide()
 
-    editHotspot: (hotspot)->
-      return unless hotspot?
-      @model = hotspot
-      @render()
+    hideOverlay: ->
+      @$el.parent().parent().find(".overlay").hide()
+
+    showOverlay: ->
       @$el.parent().parent().find(".overlay").show()
 
     addHotspot: ->
@@ -43,5 +46,5 @@ define [
       Hotspots.create @model,
         success:->
           that.trigger "addHotspot", that.model
-          that.$el.find(".overlay").show()
-
+          that.render()
+          that.showOverlay()

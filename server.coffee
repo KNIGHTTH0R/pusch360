@@ -1,4 +1,5 @@
 port = 6166
+gm = require "gm"
 express = require "express"
 ejs = require "ejs"
 app = express()
@@ -21,6 +22,7 @@ Gallery = mongoose.model 'galleries', new Schema
 
 Step = mongoose.model 'steps', new Schema
   dir : String
+  thumbnail: String
   image: String
   hotspots: {}
 
@@ -88,8 +90,8 @@ app.put "/show/:dir/hotspots/:id", (req, res)->
       res.send hotspot
 
 app.delete "/show/:dir/hotspots/:id", (req, res)->
-  Hotspots.findById(req.params.id).exec (err, hotspot)->
-    res.send 'deleted'
+  Hotspot.findById(req.params.id).exec (err, hotspot)->
+    hotspot.remove -> res.send 'deleted'
 
 # download
 app.get "/download/:dir", (req, res)->
@@ -124,19 +126,26 @@ app.get "/init/:dir", (req, res)->
   gallery = new Gallery()
   Gallery.find(dir: dir).exec (err, galleryExists)->
     if galleryExists.length
-      return res.send "already done init before, try /show/:dir forsowing and /reset/:dir for reseting"
+      return res.send "already done init before, try <a href='/show/"+galleryExists[0].dir+"'>/show/:dir</a> forsowing and <a href='/reset/"+galleryExists[0].dir+"'>/reset/:dir</a> for reseting"
 
     # save gallery after init
     doneStepping = (err)->
       gallery.save ->
-        res.send "done init, try /show/:dir"
+        res.send "done init, try <a href='/show/"+gallery.dir+"'>/show/:dir</a>"
 
     # create new steps for each jpg
     stepping = (file, callback)->
       if file.match(/.jpg/g)
+        thumbnail = gm('./360images/'+dir+'/'+file).resize 500
+        thumbnailName = 'thumbnail_'+file
+        thumbnail.write './360images/'+dir+'/'+thumbnailName, (err) ->
+          return console.log thumbnailName, err if err
+          console.log thumbnailName, ' written. '
+
         step = new Step()
         step.dir = dir
         step.image = file
+        step.thumbnail = thumbnailName
         step.save ->
           gallery.steps.push step._id
           callback()
@@ -157,15 +166,18 @@ app.get "/reset/:dir", (req, res)->
   dir = req.params.dir
   Gallery.find(dir: dir).exec (err, gallery)->
     return res.send "gallery doesnt exists" if gallery.length is 0
+
     gallery = gallery[0]
+    gallerydir = gallery.dir
     Step.find(_id: $in: gallery.steps).exec (err, steps)->
       for step in steps
+        fs.unlink './360images/'+gallery.dir+'/'+step.thumbnail
         step.remove()
     Hotspot.find(_id: $in: gallery.hotspots).exec (err, hotspots)->
        for spot in hotspots
         spot.remove()
     gallery.remove()
-    res.send("gallery reseted, ready to init again")
+    res.send("gallery reseted, ready to <a href='/init/"+gallerydir+"'>init</a> again")
 
 app.listen port
 console.log "Welcome to Pusch360! server runs on port "+port

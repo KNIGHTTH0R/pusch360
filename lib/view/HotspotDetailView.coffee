@@ -18,10 +18,11 @@ define [
       "click #removeHotspot": "removeHotspot"
       "click #saveHotspot": "saveHotspot"
 
-    deleteHotspot:->
+    removeHotspot:->
       @model.destroy
         success:->
           console.log "deleted hs"
+      @$el.find(".overlay").hide()
 
     saveHotspot:->
       @model.set
@@ -31,9 +32,7 @@ define [
       @$el.find(".overlay").hide()
 
     editHotspot: (hotspot)->
-      console.log "edit hs!!"
       return unless hotspot?
-      console.log hotspot
       @model = hotspot
       @render()
       @$el.parent().parent().find(".overlay").show()
@@ -43,5 +42,6 @@ define [
       @model = new Hotspot
       Hotspots.create @model,
         success:->
+          that.trigger "addHotspot", that.model
           that.$el.find(".overlay").show()
 

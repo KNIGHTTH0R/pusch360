@@ -9,6 +9,8 @@ define [
     initialize:(args) ->
       @zoomStates = 5
       @rePosition()
+      @model.on "change", @render, @
+      @model.on "destroy", @remove, @
       @$el.bind "dragstop", @setCurrentPosition.bind(@)
       @$el.bind "dblclick", @edit.bind(@)
       @$el.bind "mousewheel", @scroll.bind(@)
@@ -48,6 +50,7 @@ define [
           x: "1px"
           y: "1px"
           z: "1"
+        @setCurrentPosition()
 
     setCurrentPosition:->
       @checkStep()

@@ -40,8 +40,6 @@ define [
       Hotspots.reset args.config.hotspots
 
 
-    initHotspotDetail: ->
-
     addOne: (model)->
       if @StepViews.length is 0 then model.set "active", true
       view = new StepView model: model
@@ -72,6 +70,7 @@ define [
       unless hotspotModel?
         hotspotModel = new Hotspot
       @hotspotDetailView = new HotspotDetailView model: hotspotModel
+      @hotspotDetailView.on "addHotspot", @addOneHS, @
       @$el.find(".editHotspot").append @hotspotDetailView.render().el
       Hotspots.each @addOneHS, @
 

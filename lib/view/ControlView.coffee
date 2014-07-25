@@ -32,8 +32,8 @@ define [
       # @render()
 
     slideImages: (e)->
-      if @isDrag isnt true then return
-      tresh = 30
+      return if @isDrag isnt true
+      tresh = 2
       thisPos = e.pageX || e.screenX
       diff = @dragPos - thisPos
       if diff>tresh

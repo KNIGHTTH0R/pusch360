@@ -19,8 +19,11 @@ define [
     template: _.template Template
 
     initialize:(args)->
+
       @$el = $ args.selector
       @$el.append @template()
+      preview = args.config.steps[0]
+      @$el.find('.steps').append '<img class="preview" src="/360images/'+preview.dir+'/'+preview.thumbnail+'" />'
 
       @StepViews = []
       @HotspotViews = []

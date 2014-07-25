@@ -9,15 +9,14 @@ define [
       "click .prev-step": "prevStep"
       "click .next-step": "nextStep"
       "keyup .jumpto": "jumpTo"
-      "mousemove .rangeControl": "range"
 
-      "mousedown .slidearea": "startSlide"
+      "mousedown .controls": "startSlide"
       #"mouseout .slidearea": "endSlide"
-      "mouseup .slidearea": "endSlide"
-      "mousemove .slidearea": "slideImages"
-      "dragstart .slidearea": "startSlide"
-      "dragend .slidearea": "endSlide"
-      "drag .slidearea": "slideImages"
+      "mouseup": "endSlide"
+      "mousemove": "slideImages"
+      "dragstart": "startSlide"
+      "dragend": "endSlide"
+      "drag": "slideImages"
 
     template: _.template Template
 
@@ -43,6 +42,7 @@ define [
         @nextStep()
         @dragPos = thisPos
     startSlide: (e)->
+      console.log "uhu"
       @dragPos = e.pageX || e.screenX
       @isDrag = true
     endSlide: (e)->

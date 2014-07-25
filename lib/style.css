@@ -11,19 +11,29 @@ h1 {
   line-height: 1.1;
 }
 .overlay {
+
   display: none;
 }
-.editHotspot,
-.controls {
+.editHotspot {
   z-index: 2;
   position: relative;
 }
+
+.controls {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
 .editHotspot .overlay {
   padding: 12px;
   background: #f06c0b;
   position: absolute;
   top: 100px;
-  right: 0;
+  right: -200px;
+}
+.steps {
+  position:relative;
 }
 .step {
   position: absolute;
@@ -42,7 +52,7 @@ h1 {
   width: 100%;
 }
 .rangeControl {
-  width: 500px;
+  width: 470px;
 }
 #hotspots {
   position: static;
@@ -63,16 +73,19 @@ h1 {
   content: "+";
   line-height: 1;
   background: #f06c0b;
-  border: 3px solid white;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  border: 1px solid white;
   color: white;
-  font-size: 26px;
+  font-size: 12px;
   border-radius: 50px;
   cursor: pointer;
   z-index: 1000;
-  padding: 0px 6px 0;
+  padding: 0px 3px 0;
   display: inline-block;
 }
+.hotspot figcaption {
+  font-size:10px;
+}
+
 .hotspot > div {
   position: absolute!important;
   padding: 25px;

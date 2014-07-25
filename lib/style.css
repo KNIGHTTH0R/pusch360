@@ -1,89 +1,87 @@
 @import url("http://fonts.googleapis.com/css?family=Open+Sans:300");
-body {font-family:Open Sans;font-weight:300;}
-h1 {font-size:62px;line-height:1.1;}
-
+body {
+  font-family: Open Sans;
+  font-weight: 300;
+}
+h1 {
+  font-size: 62px;
+  line-height: 1.1;
+}
+.overlay {
+  display: none;
+}
+.editHotspot,
 .controls {
   z-index: 2;
   position: relative;
 }
-
+.editHotspot .overlay {
+  padding: 12px;
+  background: #f06c0b;
+  position: absolute;
+  top: 100px;
+  right: 0;
+}
 .step {
-  position:absolute;
-  top:0;
-  left:0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
-
-.step img, .slidearea {
-    height: 600px;
-    -webkit-user-select: none;  /* Chrome all / Safari all */
-    -moz-user-select: none;     /* Firefox all */
-    -ms-user-select: none;      /* IE 10+ */
-    -o-user-select: none;
-    user-select: none;
+.step img,
+.slidearea {
+  height: 600px;
 }
-
 .slidearea {
   z-index: 500;
-  float: left;
+  position:absolute;
   cursor: ew-resize;
   width: 100%;
 }
-
-
 .rangeControl {
   width: 500px;
-  // position: absolute;
-  // z-index: 999;
-  // top: 150px;
-  // height: 500px;
-  // opacity:0;
 }
 #hotspots {
-  position:static;
-  z-index:1000;
+  position: static;
+  z-index: 1000;
 }
-
 .hotspots {
   height: 100%;
   z-index: 1000;
   position: absolute;
 }
-
 .hotspot {
-  position:absolute!important;
-  img {width:100%;}
-  &::before {
-    content:"+";
-    color:white;
-    line-height:1;
-    background: #f06c0b;
-    border:3px solid white;
-    box-shadow: 0 0 3px rgba(0,0,0,.3);
-    color: white;
-    font-size: 26px;
-    border-radius: 50px;
-    cursor: pointer;
-    z-index: 1000;
-    padding:0px 6px 0;
-    display: inline-block;
-  }
-
-  > div {
-    position:absolute!important;
-    padding: 25px;
-    background: white;
-    width: 300px;
-    border: 1px solid #ddd;
-    display:none;
-  }
-
-  &.active > * {display:block;}
+  position: absolute!important;
 }
-
+.hotspot img {
+  width: 100%;
+}
+.hotspot::before {
+  content: "+";
+  line-height: 1;
+  background: #f06c0b;
+  border: 3px solid white;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 26px;
+  border-radius: 50px;
+  cursor: pointer;
+  z-index: 1000;
+  padding: 0px 6px 0;
+  display: inline-block;
+}
+.hotspot > div {
+  position: absolute!important;
+  padding: 25px;
+  background: white;
+  width: 300px;
+  border: 1px solid #ddd;
+  display: none;
+}
+.hotspot.active > * {
+  display: block;
+}
 .gallery-container {
-  position:relative;
-  width:1000px;
-  height:700px;
+  position: relative;
+  width: 1000px;
+  height: 700px;
 }
-
-

@@ -12,7 +12,7 @@ define [
   'cs!view/HotspotDetailView'
   'text!templates/app.html'
   'jquery-ui'
-], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, Template)->
+], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, HotspotDetailView, Template)->
   class AppView extends Backbone.View
 
 

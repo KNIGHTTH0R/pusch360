@@ -4,10 +4,11 @@ define [
   'text!templates/step.html'
 ], (Backbone, _, Template)->
   class StepView extends Backbone.View
+
     template: _.template Template
+
     initialize:->
       @model.on "change", @toggle, @
-
 
     toggle:->
       if @model.get "active"

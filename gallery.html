@@ -33,11 +33,11 @@
            <h1>Hello! What your looking at is a astonishingly amazing 360 Image Editor made out of pure passion.</h1>
            <div id="gallery"></div>
          </div>
-        <!-- <script type="text/javascript" data-main="/config.js" src="/bower_components/requirejs/require.js"></script> -->
         <script>
             window.Pusch360Plugins = [];
             window.Pusch360Plugins.push({selector: '#gallery', config: <%-JSON.stringify(config) %>, dir: 'test'});
          </script>
-         <script src="/build.min.js"></script>
+        <script type="text/javascript" data-main="/config.js" src="/bower_components/requirejs/require.js"></script>
+         <!-- <script src="/build.min.js"></script> -->
     </body>
 </html>

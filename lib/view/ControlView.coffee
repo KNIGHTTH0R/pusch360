@@ -10,23 +10,27 @@ define [
       "click .next-step": "nextStep"
       "keyup .jumpto": "jumpTo"
 
-      "mousedown .controls": "startSlide"
-      #"mouseout .slidearea": "endSlide"
-      "mouseup": "endSlide"
-      "mousemove": "slideImages"
-      "dragstart": "startSlide"
-      "dragend": "endSlide"
-      "drag": "slideImages"
-
     template: _.template Template
+
+    keyupEvent:(e)->
+      key = e.keyCode
+      if key is 37 then @prevStep() # left cursor
+      else if key is 39 then @nextStep()# right cursor
 
     render:->
       @$el.html @template @model.toJSON()
       @
 
     initialize:()->
-      window.addEventListener "mouseup", @endSlide.bind(@)
-      window.addEventListener "mousemove", @slideImages.bind(@)
+      $(window).on "mouseup", @endSlide.bind(@)
+      $(window).on "mousemove", @slideImages.bind(@)
+      $(window).on "keyup", @keyupEvent.bind(@)
+
+      @$el.on "mousedown", @startSlide.bind(@)
+      @$el.on "mouseup", @endSlide.bind(@)
+      @$el.on "dragstart", @startSlide.bind(@)
+      @$el.on "dragend", @endSlide.bind(@)
+      @$el.on "drag", @slideImages.bind(@)
       # @model.on "change", @render, @
       # @render()
 

@@ -40,14 +40,14 @@ define [
 
     slideImages: (e)->
       return if @isDrag isnt true
-      tresh = 2
+      tresh = 10
       thisPos = e.pageX || e.screenX
       diff = @dragPos - thisPos
       if diff>tresh
-        @prevStep()
+        @nextStep()
         @dragPos = thisPos
       else if diff<-tresh
-        @nextStep()
+        @prevStep()
         @dragPos = thisPos
     startSlide: (e)->
       @dragPos = e.pageX || e.screenX

@@ -4,7 +4,7 @@ define [
   'text!templates/hotspot.html'
 ], (Backbone, _, Template)->
   class HotspotView extends Backbone.View
-    className: "hotspot"
+    className: "hotspot-container"
 
     initialize:(args) ->
       @zoomStates = 5
@@ -31,14 +31,15 @@ define [
       @rePosition()
       return false
 
-    changeCurrentStep:(step)->
-      @currentStep = step
+    changeCurrentStep:(stepId)->
+      @currentStep = stepId
+      console.log stepId
       @rePosition()
 
     rePosition:->
       @checkStep()
       hsPos = @model.attributes.positions[@currentStep]
-      @$el.css
+      @$el.find(".hotspot").css
         top: hsPos.x
         left: hsPos.y
         transform: "scale("+hsPos.z+")"
@@ -54,12 +55,11 @@ define [
 
     setCurrentPosition:->
       @checkStep()
-      @model.attributes.positions[@currentStep].x = @$el.css "top"
-      @model.attributes.positions[@currentStep].y = @$el.css "left"
+      @model.attributes.positions[@currentStep].x = @$el.find(".hotspot").css "top"
+      @model.attributes.positions[@currentStep].y = @$el.find(".hotspot").css "left"
       @model.save()
 
     render: ->
-      @$el.addClass @model.get "title"
       @$el.html @template @model.toJSON()
-      @$el.draggable()
+      @$el.find('.hotspot').draggable()
       @

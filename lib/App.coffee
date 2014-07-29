@@ -54,10 +54,11 @@ define [
       @hotspotDetailView.render()
       @hotspotDetailView.showOverlay()
 
-    changeSteps:(options)->
-      @stepView.change options.stepnumber
+    changeSteps:(stepnumber)->
+      @stepView.change stepnumber
       for view in @HotspotViews
-        view.changeCurrentStep(options.stepId)
+        id = @Steps.models[stepnumber-1].get("_id")
+        view.changeCurrentStep(id)
 
     addAllHS: ->
       hotspotModel = Hotspots.first()

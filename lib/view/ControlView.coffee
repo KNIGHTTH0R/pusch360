@@ -58,6 +58,7 @@ define [
     prevStep:->
       changefrom = parseInt @model.get "current"
       @changeStep changefrom-1
+
     nextStep:->
       changefrom = parseInt @model.get "current"
       @changeStep changefrom+1
@@ -79,4 +80,8 @@ define [
       @$el.find(".rangeControl").val(stepNumber)
       topelement = @$el.parent().parent().find(".step")[stepNumber-1]
 
-      @trigger "changeStep", $(topelement).attr "step-id"
+      options =
+        stepId: $(topelement).attr "step-id"
+        stepnumber: @model.get "current"
+
+      @trigger "changeStep", options

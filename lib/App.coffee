@@ -15,17 +15,13 @@ define [
 ], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, HotspotDetailView, Template)->
   class AppView extends Backbone.View
 
-
     template: _.template Template
 
     initialize:(args)->
 
       @$el = $ args.selector
       @$el.append @template()
-      preview = args.config.steps[0]
-      @$el.find('.steps').append '<img class="preview" src="/360images/'+preview.dir+'/'+preview.thumbnail+'" />'
 
-      @StepViews = []
       @HotspotViews = []
 
       control = new Backbone.Model
@@ -42,15 +38,9 @@ define [
       @Steps.reset args.config.steps
       Hotspots.reset args.config.hotspots
 
-
-    addOne: (model)->
-      if @StepViews.length is 0 then model.set "active", true
-      view = new StepView model: model
-      @StepViews.push view
-      @$el.find('.steps').append view.render().el
-
     addAll: ->
-      @Steps.each @addOne, @
+      @stepView = new StepView collection: @Steps
+      @$el.find('.steps').append @stepView.render().el
 
     addOneHS: (model)->
       stepModel = @Steps.first()
@@ -64,14 +54,10 @@ define [
       @hotspotDetailView.render()
       @hotspotDetailView.showOverlay()
 
-    changeSteps:(step)->
-      activeStep = @Steps.findActive()
-      newStep = @Steps.findWhere _id: step
-      newStep.set("active", true)
-      activeStep?.set("active", false)
-
+    changeSteps:(options)->
+      @stepView.change options.stepnumber
       for view in @HotspotViews
-        view.changeCurrentStep(step)
+        view.changeCurrentStep(options.stepId)
 
     addAllHS: ->
       hotspotModel = Hotspots.first()

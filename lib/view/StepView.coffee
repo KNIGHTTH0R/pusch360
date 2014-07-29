@@ -1,21 +1,26 @@
 define [
   'backbone'
   'underscore'
-  'text!templates/step.html'
-], (Backbone, _, Template)->
+], (Backbone, _)->
   class StepView extends Backbone.View
 
-    template: _.template Template
+    tagName: "img"
 
-    initialize:->
-      @model.on "change", @toggle, @
+    initialize:(args)->
+      @images = []
+      that = @
+      @collection = args.collection
+      @collection.forEach (model)->
+        img = new Image()
+        img.src = '/360images/'+model.get("dir")+'/'+model.get("thumbnail")
+        that.images.push img
 
-    toggle:->
-      if @model.get "active"
-        @$el.find(".step").show()
-      else
-        @$el.find(".step").hide()
+      @model = @collection.first()
+
+    change:(stepnumber)->
+      @$el.attr("src", @images[parseInt(stepnumber)-1].src);
 
     render: ->
-      @$el.html @template @model.toJSON()
+      @$el.attr "src", '/360images/'+@model.get("dir")+'/' + @model.get "thumbnail"
+      @$el.attr "step-id", @model.get "_id"
       @

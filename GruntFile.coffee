@@ -19,22 +19,22 @@ module.exports = (grunt) ->
           "require-less": 'require-less'
 
     requirejs:
-      frontend:
+      admin:
         options:
           baseUrl : './lib'
           name : './almond'
-          include: ['../config']
+          include: ['../configUser']
           findNestedDependencies: true,
-          insertRequire: ['../config']
-          # optimizeAllPluginResources: false,
+          insertRequire: ['../configUser']
+          optimizeAllPluginResources: true,
           stubModules: ['less', 'text', 'cs'],
           wrap: true
           out : 'build.min.js'
-          optimize : 'none',
-          # optimize : 'uglify2',
-          #generateSourceMaps : false
-          #preserveLicenseComments : false
-          #inlineText : true
+          # optimize : 'none',
+          optimize : 'uglify2',
+          generateSourceMaps : false
+          preserveLicenseComments : false
+          inlineText : true
 
   grunt.registerTask "initGallery", ->
     fs.readdir '360images', (err, files) ->

@@ -57,10 +57,7 @@ h1 {
   cursor: ew-resize;
   width: 100%;
 }
-#hotspots {
-  position: static;
-  z-index: 1000;
-}
+
 .hotspots {
   height: 100%;
   z-index: 1000;
@@ -69,7 +66,7 @@ h1 {
 .hotspot {
   position: absolute!important;
 }
-.hotspot img {
+.hotspot-container img {
   width: 100%;
 }
 .hotspot::before {
@@ -89,7 +86,7 @@ h1 {
   font-size:10px;
 }
 
-.hotspot > div {
+.popup {
   position: absolute!important;
   padding: 25px;
   background: white;

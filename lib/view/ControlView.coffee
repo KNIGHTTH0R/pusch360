@@ -38,20 +38,24 @@ define [
       # @model.on "change", @render, @
       # @render()
 
+    tresh: 20
     slideImages: (e)->
       return if @isDrag isnt true
-      tresh = 2
       thisPos = e.pageX || e.screenX
       diff = @dragPos - thisPos
-      if diff>tresh
-        @prevStep()
-        @dragPos = thisPos
-      else if diff<-tresh
-        @nextStep()
-        @dragPos = thisPos
+      movRight = diff<-@tresh
+      movLeft = diff>@tresh
+      if movLeft is false && movRight is false
+        return false
+      else if movLeft is true then @prevStep()
+      else if movRight then @nextStep()
+
+      @dragPos = thisPos
+
     startSlide: (e)->
       @dragPos = e.pageX || e.screenX
       @isDrag = true
+
     endSlide: (e)->
       @isDrag = false
 
@@ -78,10 +82,5 @@ define [
       @model.set "current", stepNumber
       @$el.find(".jumpto").val(stepNumber)
       @$el.find(".rangeControl").val(stepNumber)
-      topelement = @$el.parent().parent().find(".step")[stepNumber-1]
 
-      options =
-        stepId: $(topelement).attr "step-id"
-        stepnumber: @model.get "current"
-
-      @trigger "changeStep", options
+      @trigger "changeStep", @model.get "current"

@@ -22,5 +22,4 @@ define [
 
     render: ->
       @$el.attr "src", '/360images/'+@model.get("dir")+'/' + @model.get "thumbnail"
-      @$el.attr "step-id", @model.get "_id"
       @

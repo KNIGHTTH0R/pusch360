@@ -9,22 +9,16 @@ define [
   'cs!model/Hotspots'
   'cs!model/Hotspot'
   'cs!view/HotspotViewUser'
-  'text!templates/app.html'
-], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, Template)->
+], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView)->
   class AppView extends Backbone.View
 
-    template: _.template Template
-
+    className: "gallery-container"
     initialize:(args)->
-
-      console.log args
       unless args.selector
         selector = "gallery-"+Date.now()
         $("body").append "<div id='"+selector+"'></div>"
         args.selector = selector
-      @$el = $ '#'+args.selector
-      @$el.append @template()
-      console.log @$el
+      $('#'+args.selector).append @$el
 
       @HotspotViews = []
 
@@ -35,7 +29,7 @@ define [
       controlView = new ControlView model: control
       controlView.on "changeStep", @changeSteps, @
 
-      @$el.find(".gallery-container").append controlView.render().el
+      @$el.append controlView.render().el
       @Steps = new Steps
       @listenTo @Steps, 'reset', @addAll
       @listenTo Hotspots, 'reset', @addAllHS
@@ -44,13 +38,13 @@ define [
 
     addAll: ->
       @stepView = new StepView collection: @Steps
-      @$el.find('.steps').append @stepView.render().el
+      @$el.append @stepView.render().el
 
     addOneHS: (model)->
       stepModel = @Steps.first()
       view = new HotspotView model: model, currentStep: stepModel.get("_id")
       @HotspotViews.push view
-      @$el.find('.hotspots').append view.render().el
+      @$el.append view.render().el
 
     changeSteps:(stepnumber)->
       @stepView.change stepnumber

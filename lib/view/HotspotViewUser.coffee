@@ -4,13 +4,14 @@ define [
   'text!templates/hotspot.html'
 ], (Backbone, _, Template)->
   class HotspotView extends Backbone.View
-    className: "hotspot-container"
+    className: "hotspot"
 
     initialize:(args) ->
       @zoomStates = 5
       @rePosition()
-      @$el.bind "dblclick", ->
+      @$el.bind "click", ->
         $(@).toggleClass("active")
+        console.log "click"
 
     template: _.template Template
 

@@ -8,14 +8,14 @@ define [
     className:'controls'
 
     events:
-      "mousedown .controls-container": "stopProp"
+      # "mousedown .controls-container": "stopProp"
       "click .prev-step": "prevStep"
       "click .next-step": "nextStep"
       "blur .jumpto": "jumpTo"
 
     template: _.template Template
-    stopProp:(e)->
-      e.stopPropagation()
+    # stopProp:(e)->
+    #   e.stopPropagation()
     keyupEvent:(e)->
       key = e.keyCode
       if key is 37 then @prevStep() # left cursor

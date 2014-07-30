@@ -52,7 +52,12 @@ app.get "/galleries", (req, res)->
 
 # root - overview
 app.get "/", (req, res)->
-  res.sendfile process.cwd()+'/index.html'
+  Gallery.find().exec (err, galleries)->
+    arr = []
+    for gallery in galleries
+      arr.push dir:gallery.dir
+    res.send ejs.render fs.readFileSync('./overview.html', 'utf8'),
+      galleries: arr
 
 app.get "/show/:dir", showGallery
 
@@ -95,6 +100,18 @@ app.delete "/show/:dir/hotspots/:id", (req, res)->
 
 # download
 app.get "/download/:dir", (req, res)->
+  updateConfig req, res ->
+    spawn = require("child_process").spawn
+    zip = spawn("zip", ["-r", "-", gallery.dir], cwd: "./360images/")
+    res.contentType "zip"
+    zip.stdout.on "data", (data) -> res.write data
+    zip.on "exit", (code) ->
+      if code isnt 0
+        res.statusCode = 500
+
+app.get "/update/:dir", updateConfig
+
+updateConfig = (req,res, cb)->
   dir = req.params.dir
   Gallery.find(dir: dir).exec (err, gallery)->
     if err
@@ -108,17 +125,10 @@ app.get "/download/:dir", (req, res)->
           dir: gallery.dir
           steps: steps
           hotspots: hotspots
-
         fs.writeFile "./360images/"+gallery.dir+"/config.json", JSON.stringify(config), (err)->
           if err then throw err
-          spawn = require("child_process").spawn
-          zip = spawn("zip", ["-r", "-", gallery.dir], cwd: "./360images/")
-          res.contentType "zip"
-          zip.stdout.on "data", (data) -> res.write data
-          zip.on "exit", (code) ->
-            if code isnt 0
-              res.statusCode = 500
-            res.end()
+          cb() unless cb?
+          res.end()
 
 # init
 app.get "/init/:dir", (req, res)->
@@ -136,12 +146,10 @@ app.get "/init/:dir", (req, res)->
     # create new steps for each jpg
     stepping = (file, callback)->
       if file.match(/.jpg/g)
-        thumbnail = gm('./360images/'+dir+'/'+file).resize 1000
+        thumbnail = gm('./360images/'+dir+'/'+file).resize 400
         thumbnailName = 'thumbnail_'+file
         thumbnail.write './360images/'+dir+'/'+thumbnailName, (err) ->
           return console.log thumbnailName, err if err
-          console.log thumbnailName, ' written. '
-
         step = new Step()
         step.dir = dir
         step.image = file
@@ -149,8 +157,7 @@ app.get "/init/:dir", (req, res)->
         step.save ->
           gallery.steps.push step._id
           callback()
-      else
-        callback()
+      else callback()
 
     # new gallery
     gallery.dir = dir

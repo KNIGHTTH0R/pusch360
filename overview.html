@@ -10,7 +10,9 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="./lib/style.css">
-
+        <style>
+          body > div {float:left;}
+        </style>
         <!--
             .    ___           ___  ___           ___
                 |   |         |   ||   |         |   |
@@ -23,16 +25,12 @@
 
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
         <!-- Add your site or application content here -->
         <p>Gallery overview</p>
-        <div id="show"></div>
-        <div id="hotspots"></div>
-        <script src="build.min.js"></script>
-        <!-- <script type="text/javascript" data-main="/userConfig" src="bower_components/requirejs/require.js"></script> -->
-        <!-- <script>window.Pusch360.init('/gallery/number_one');</script> -->
+        <script>
+          window.Pusch360Plugins = <%- JSON.stringify(galleries) %>;
+         </script>
+         <!-- <script src="/build.min.js"></script> -->
+        <script type="text/javascript" data-main="/configUser.js" src="/bower_components/requirejs/require.js"></script>
     </body>
 </html>

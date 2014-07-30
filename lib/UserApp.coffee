@@ -17,8 +17,14 @@ define [
 
     initialize:(args)->
 
-      @$el = $ args.selector
+      console.log args
+      unless args.selector
+        selector = "gallery-"+Date.now()
+        $("body").append "<div id='"+selector+"'></div>"
+        args.selector = selector
+      @$el = $ '#'+args.selector
       @$el.append @template()
+      console.log @$el
 
       @HotspotViews = []
 
@@ -56,6 +62,7 @@ define [
       Hotspots.each @addOneHS, @
 
   for key, plugin of window.Pusch360Plugins
-    new AppView
-      selector: plugin.selector
-      config: plugin.config
+    $.get '/360images/'+plugin.dir+'/config.json', (cfg)->
+      new AppView
+        selector: plugin.selector
+        config: cfg

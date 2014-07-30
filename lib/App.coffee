@@ -18,7 +18,6 @@ define [
     template: _.template Template
 
     initialize:(args)->
-
       @$el = $ args.selector
       @$el.append @template()
 

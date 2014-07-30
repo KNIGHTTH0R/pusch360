@@ -23,9 +23,9 @@ module.exports = (grunt) ->
         options:
           baseUrl : './lib'
           name : './almond'
-          include: ['../configUser']
+          include: ['../config-user']
           findNestedDependencies: true,
-          insertRequire: ['../configUser']
+          insertRequire: ['../config-user']
           optimizeAllPluginResources: true,
           stubModules: ['less', 'text', 'cs'],
           wrap: true
@@ -36,15 +36,8 @@ module.exports = (grunt) ->
           preserveLicenseComments : false
           inlineText : true
 
-  grunt.registerTask "initGallery", ->
-    fs.readdir '360images', (err, files) ->
-      return if err
-      for dir in dirs then console.log("dir: ",dir)
-
   grunt.registerTask 'build', 'Compiles all of the assets and copies the files to the build directory.', [
-    #'clean:build'
     'requirejs'
   ]
-
 
   require('load-grunt-tasks')(grunt)

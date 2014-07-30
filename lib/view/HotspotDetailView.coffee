@@ -1,21 +1,20 @@
 define [
   'backbone'
   'underscore'
-  'text!templates/hotspot-detail.html'
+  'text!templates/hotspot-edit.html'
   'cs!model/Hotspots'
   'cs!model/Hotspot'
 ], (Backbone, _, Template, Hotspots, Hotspot)->
   class HotspotDetailView extends Backbone.View
 
-    el:'.editHotspot'
-
     initialize:->
-      @render()
+      if @model then @render()
 
     template: _.template Template
 
     render: ->
-      @$el.html @template @model.toJSON()
+      @template @model.toJSON()
+
 
     events:
       "click #newHotspot": "addHotspot"
@@ -32,13 +31,13 @@ define [
         title: $("#hotspot-title").val()
         content: $("#hotspot-content").val()
       @model.save()
-      @$el.find(".overlay").hide()
+      @hideOverlay()
 
     hideOverlay: ->
-      @$el.parent().parent().find(".overlay").hide()
+      @$el.parent().hide()
 
     showOverlay: ->
-      @$el.parent().parent().find(".overlay").show()
+      @$el.parent().show()
 
     addHotspot: ->
       that = @
@@ -48,3 +47,4 @@ define [
           that.trigger "addHotspot", that.model
           that.render()
           that.showOverlay()
+      return @model

@@ -32,7 +32,7 @@ define [
 
       @$el.append controlView.render().el
       @HotspotDetailView = new HotspotDetailView
-      @$el.append("<div class='overlay'></div>")
+      @$el.append("<div class='overlay-container'></div>")
       @Steps = new Steps
       @listenTo @Steps, 'reset', @addAll
       @listenTo Hotspots, 'reset', @addAllHS
@@ -48,8 +48,10 @@ define [
       view = new HotspotView model: model, currentStep: stepModel.get("_id")
       view.on "clickModel", (model)=>
         @HotspotDetailView.model = model
-        @$el.find('.overlay').html @HotspotDetailView.render().$el
-        @$el.find(".overlay").show()
+        overlay = @$el.find('.overlay-container')
+        overlay.html @HotspotDetailView.render().$el
+        overlay.show().one "click", -> $(@).hide()
+
 
       @HotspotViews.push view
       @$el.append view.render().el

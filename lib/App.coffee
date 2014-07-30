@@ -10,27 +10,29 @@ define [
   'cs!model/Hotspot'
   'cs!view/HotspotView'
   'cs!view/HotspotDetailView'
-  'text!templates/app.html'
   'jquery-ui'
-], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, HotspotDetailView, Template)->
+], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, HotspotDetailView)->
   class AppView extends Backbone.View
 
-    template: _.template Template
+    className: "gallery-container"
 
     initialize:(args)->
-      @$el = $ args.selector
-      @$el.append @template()
-
+      $(args.selector).append @$el
       @HotspotViews = []
-
       control = new Backbone.Model
       control.set
         total: args.config.steps.length
         current: 1
       controlView = new ControlView model: control
       controlView.on "changeStep", @changeSteps, @
+      @$el.append controlView.render().el
 
-      @$el.find(".gallery-container").append controlView.render().el
+      @HotspotDetailView = new HotspotDetailView
+      @$el.append "<div class='overlay'></div>"
+      input = $("<input type='button' class='add-hs' value='new hotspot' />").appendTo @$el
+      input.on "click", =>
+        model = @HotspotDetailView.addHotspot()
+        @addOneHS model
       @Steps = new Steps
       @listenTo @Steps, 'reset', @addAll
       @listenTo Hotspots, 'reset', @addAllHS
@@ -39,19 +41,20 @@ define [
 
     addAll: ->
       @stepView = new StepView collection: @Steps
-      @$el.find('.steps').append @stepView.render().el
+      @$el.append @stepView.render().el
 
     addOneHS: (model)->
       stepModel = @Steps.first()
       view = new HotspotView model: model, currentStep: stepModel.get("_id")
-      view.on "editHotspot", @switchHotspotDetailView, @
-      @HotspotViews.push view
-      @$el.find('.hotspots').append view.render().el
+      view.on "editHotspot", (model)=>
+        @HotspotDetailView.model = model
+        overlay = @$el.find '.overlay'
+        overlay.html @HotspotDetailView.render()
+        overlay.show().one "dblclick", -> $(@).hide()
+        console.log @HotspotDetailView.render()
 
-    switchHotspotDetailView:(hotspot)->
-      @hotspotDetailView.model = hotspot
-      @hotspotDetailView.render()
-      @hotspotDetailView.showOverlay()
+      @HotspotViews.push view
+      @$el.append view.render().el
 
     changeSteps:(stepnumber)->
       @stepView.change stepnumber

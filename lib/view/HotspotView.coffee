@@ -12,15 +12,11 @@ define [
       @model.on "change", @render, @
       @model.on "destroy", @remove, @
       @$el.bind "dragstop", @setCurrentPosition.bind(@)
-      @$el.bind "dblclick", @edit.bind(@)
       @$el.bind "mousewheel", @scroll.bind(@)
-      # @$el.bind "dblclick", ->
-      #   $(@).toggleClass("active")
+      @$el.bind "dblclick", =>
+        @trigger "editHotspot", @model
 
     template: _.template Template
-
-    edit:->
-      @trigger "editHotspot", @model
 
     scroll: (e)->
       @checkStep()

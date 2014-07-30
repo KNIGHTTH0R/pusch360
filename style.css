@@ -30,7 +30,7 @@
 .hotspot::before {
   content: "+";
   line-height: 1;
-  background: #f06c0b;
+  background: #000;
   border: 1px solid white;
   color: white;
   font-size: 12px;

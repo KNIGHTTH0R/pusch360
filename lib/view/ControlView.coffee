@@ -14,8 +14,7 @@ define [
       "blur .jumpto": "jumpTo"
 
     template: _.template Template
-    # stopProp:(e)->
-    #   e.stopPropagation()
+
     keyupEvent:(e)->
       key = e.keyCode
       if key is 37 then @prevStep() # left cursor
@@ -33,7 +32,7 @@ define [
 
 
 
-    tresh: 20
+    tresh: 5
 
     slideImages: (e)->
       return unless @isDrag

@@ -36,12 +36,10 @@
           for(var i = 0; i < window.Pusch360Plugins.length; i++) {
             var dir = window.Pusch360Plugins[i].dir;
             html += "<li><a href='/show/"+dir+"'>"+dir+"</a></li>"
-            console.log(dir);
           }
           var ul = document.getElementById("list");
           ul.innerHTML = html
          </script>
-         <!-- <script src="/build.min.js"></script> -->
-        <script type="text/javascript" data-main="/config-user.js" src="/bower_components/requirejs/require.js"></script>
+          <script type="text/javascript" data-main="/config-user.js" src="/bower_components/requirejs/require.js"></script>
     </body>
 </html>

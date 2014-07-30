@@ -98,25 +98,14 @@ app.delete "/show/:dir/hotspots/:id", (req, res)->
   Hotspot.findById(req.params.id).exec (err, hotspot)->
     hotspot.remove -> res.send 'deleted'
 
-# download
-app.get "/download/:dir", (req, res)->
-  updateConfig req, res ->
-    spawn = require("child_process").spawn
-    zip = spawn("zip", ["-r", "-", gallery.dir], cwd: "./360images/")
-    res.contentType "zip"
-    zip.stdout.on "data", (data) -> res.write data
-    zip.on "exit", (code) ->
-      if code isnt 0
-        res.statusCode = 500
 
-app.get "/update/:dir", updateConfig
-
-updateConfig = (req,res, cb)->
+updateConfig = (req, res, nullus, cb)->
   dir = req.params.dir
   Gallery.find(dir: dir).exec (err, gallery)->
     if err
       res.statusCode = 500
-      res.end()
+      res.end("")
+
     return if gallery.length is 0
     gallery = gallery[0]
     Step.find(_id: $in: gallery.steps).exec (err, steps)->
@@ -127,8 +116,23 @@ updateConfig = (req,res, cb)->
           hotspots: hotspots
         fs.writeFile "./360images/"+gallery.dir+"/config.json", JSON.stringify(config), (err)->
           if err then throw err
-          cb() unless cb?
-          res.end()
+          if cb? then cb(req, res, gallery)
+          else res.end("")
+
+downloadZip = (req, res, gallery)->
+  spawn = require("child_process").spawn
+  zip = spawn("zip", ["-r", "-", gallery.dir], cwd: "./360images/")
+  res.contentType "zip"
+  zip.stdout.on "data", (data) ->
+    res.write data
+  zip.on "exit", (code) ->
+    if code isnt 0 then res.statusCode = 500
+
+# downloadZip
+app.get "/download/:dir", (req, res)->
+  updateConfig req, res, null, downloadZip
+# updateConfig
+app.get "/update/:dir", (req, res)-> updateConfig(req, res)
 
 # init
 app.get "/init/:dir", (req, res)->

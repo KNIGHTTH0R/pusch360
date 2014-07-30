@@ -1,3 +1,12 @@
+<form target="hiddenIframe" action="/update/<%- window.location.href.split("/").pop() %>" method="get">
+    <input type="submit" value="Update" name="updateCfg" id="updateCfg" />
+    <iframe id="hiddenIframe" name="hiddenIframe" style="display:none; visibility: none; width:0; height:0;" ></iframe>
+</form>
+
+<form target="_top" action="/download/<%- window.location.href.split("/").pop() %>" method="get">
+    <input type="submit" value="Dowload" name="downloadZip" id="downloadZip" />
+</form>
+
 <input type="button" name="newHotspot" id="newHotspot" value="New Hotspot" />
 <div class="overlay">
   <div class="form-group">

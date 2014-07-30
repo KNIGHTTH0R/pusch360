@@ -33,7 +33,6 @@ define [
 
     changeCurrentStep:(stepId)->
       @currentStep = stepId
-      console.log stepId
       @rePosition()
 
     rePosition:->

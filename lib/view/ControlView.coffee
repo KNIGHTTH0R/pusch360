@@ -29,26 +29,19 @@ define [
       $(window).on "mouseup", @endSlide.bind(@)
       $(window).on "mousemove", @slideImages.bind(@)
       $(window).on "keyup", @keyupEvent.bind(@)
-
       @$el.on "mousedown", @startSlide.bind(@)
-      @$el.on "mouseup", @endSlide.bind(@)
-      @$el.on "dragstart", @startSlide.bind(@)
-      @$el.on "dragend", @endSlide.bind(@)
-      @$el.on "drag", @slideImages.bind(@)
+
+
 
     tresh: 20
 
     slideImages: (e)->
-      return if @isDrag isnt true
+      return unless @isDrag
       thisPos = e.pageX || e.screenX
       diff = @dragPos - thisPos
-      movRight = diff<-@tresh
-      movLeft = diff>@tresh
-      if movLeft is false && movRight is false
-        return false
-      else if movLeft is true then @prevStep()
-      else if movRight then @nextStep()
-
+      return unless diff>@tresh || diff<-@tresh
+      if diff>0 then @prevStep()
+      else @nextStep()
       @dragPos = thisPos
 
     startSlide: (e)->

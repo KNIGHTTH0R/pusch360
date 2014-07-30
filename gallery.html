@@ -9,7 +9,7 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="/lib/style.css">
+        <link rel="stylesheet" type="text/css" href="/adminstyle.css">
 
 
         <!--
@@ -24,6 +24,9 @@
 
     </head>
      <body>
+        <a class="btn" target="iframe" href="/update/<%= config.dir %>">Update CONFIG</a>
+        <iframe name="iframe" style="display:none"></iframe>
+        <a class="btn" target="_blank" href="/download/<%= config.dir %>">Download</a>
         <div id="app">
            <div id="gallery"></div>
          </div>

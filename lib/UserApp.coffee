@@ -9,7 +9,8 @@ define [
   'cs!model/Hotspots'
   'cs!model/Hotspot'
   'cs!view/HotspotViewUser'
-], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView)->
+  'cs!view/HotspotDetailUserView'
+], (Backbone, _, $, Steps, Step, StepView, ControlView, Hotspots, Hotspot, HotspotView, HotspotDetailView)->
   class AppView extends Backbone.View
 
     className: "gallery-container"
@@ -30,6 +31,8 @@ define [
       controlView.on "changeStep", @changeSteps, @
 
       @$el.append controlView.render().el
+      @HotspotDetailView = new HotspotDetailView
+      @$el.append("<div class='overlay'></div>")
       @Steps = new Steps
       @listenTo @Steps, 'reset', @addAll
       @listenTo Hotspots, 'reset', @addAllHS
@@ -43,6 +46,11 @@ define [
     addOneHS: (model)->
       stepModel = @Steps.first()
       view = new HotspotView model: model, currentStep: stepModel.get("_id")
+      view.on "clickModel", (model)=>
+        @HotspotDetailView.model = model
+        @$el.find('.overlay').html @HotspotDetailView.render().$el
+        @$el.find(".overlay").show()
+
       @HotspotViews.push view
       @$el.append view.render().el
 

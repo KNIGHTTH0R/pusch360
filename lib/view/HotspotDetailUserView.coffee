@@ -5,13 +5,14 @@ define [
 ], (Backbone, _, Template)->
   class HotspotDetailUserView extends Backbone.View
 
-    el:'.overlay'
+    className:'overlay'
 
     initialize:->
-      @on "click", ->
-        @$el.hide()
+      @$el.on "click", =>
+        @$el.parent().hide()
 
     template: _.template Template
 
     render: ->
       @$el.html @template @model.toJSON()
+      @

@@ -1,31 +1,31 @@
 define [
   'backbone'
   'underscore'
-  'text!templates/hotspot.html'
-], (Backbone, _, Template)->
-  class HotspotView extends Backbone.View
+], (Backbone, _)->
+  class HotspotViewUser extends Backbone.View
     className: "hotspot"
 
     initialize:(args) ->
       @zoomStates = 5
+      @$el.on "click", =>
+        @trigger "clickModel", @model
       @rePosition()
-      @$el.bind "click", ->
-        $(@).toggleClass("active")
-        console.log "click"
-
-    template: _.template Template
 
     changeCurrentStep:(stepId)->
       @currentStep = stepId
       @rePosition()
 
+    checkStep:->
+      unless @model.attributes.positions[@currentStep]?
+        @model.attributes.positions[@currentStep] =
+          x: "1px"
+          y: "1px"
+          z: "1"
+
     rePosition:->
+      @checkStep()
       hsPos = @model.attributes.positions[@currentStep]
-      @$el.find(".hotspot").css
+      @$el.css
         top: hsPos.x
         left: hsPos.y
         transform: "scale("+hsPos.z+")"
-
-    render: ->
-      @$el.html @template @model.toJSON()
-      @

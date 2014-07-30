@@ -1,26 +1,5 @@
-@import url("http://fonts.googleapis.com/css?family=Open+Sans:300");
-body {
-  font-family: Open Sans;
-  font-weight: 300;
-}
-#app {
-  padding:122px;
-}
-h1 {
-  font-size: 62px;
-  line-height: 1.1;
-}
-.overlay {
-
-  display: none;
-}
-.editHotspot {
-  z-index: 2;
-  position: absolute;
-  right:-200px;
-}
-
 .controls {
+  cursor: ew-resize;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -28,49 +7,23 @@ h1 {
   z-index:995;
 }
 
-.editHotspot .overlay {
-  padding: 12px;
-  background: #f06c0b;
-}
-
 .controls-container {
-  position: relative;
-  top: -35px;
   display:none;
 }
-
-.steps {
-  position:relative;
-}
-.step {
+.overlay {
   position: absolute;
+  z-index: 1200;
   top: 0;
+  bottom: 0;
   left: 0;
-}
-
-.slidearea {
-  height: 600px;
-}
-
-.slidearea {
-  z-index: 500;
-  position:absolute;
-  cursor: ew-resize;
-  width: 100%;
-}
-
-.hotspots, .hotspot-container {
-  height: 100%;
-  z-index: 990;
-  position: absolute;
-  top:0;bottom:0;
-  left:0;right:0;
+  right: 0;
+  display:none;
+  background: white;
+  padding: 24px;
 }
 .hotspot {
+  z-index:1000;
   position: absolute!important;
-}
-.hotspot-container img {
-  width: 100%;
 }
 .hotspot::before {
   content: "+";
@@ -81,12 +34,8 @@ h1 {
   font-size: 12px;
   border-radius: 50px;
   cursor: pointer;
-  z-index: 1000;
   padding: 0px 3px 0;
   display: inline-block;
-}
-.hotspot figcaption {
-  font-size:10px;
 }
 
 .popup {
@@ -97,9 +46,10 @@ h1 {
   border: 1px solid #ddd;
   display: none;
 }
-.hotspots .active > .popup {
+.active.popup {
   display: block;
 }
+
 .gallery-container {
   display:inline-block;
   position:relative;

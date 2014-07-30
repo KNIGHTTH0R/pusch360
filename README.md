@@ -8,11 +8,11 @@ pusch360
 ## Software Requirements
 
 ```js
-apt-get install nodejs git mongodb imagemagick zip
+apt-get install nodejs git mongodb graphicsmagick zip
 ```
 On Mac OSX use Homebrew
 ```js
-brew install nodejs git mongodb imagemagick
+brew install nodejs git mongodb graphicsmagick
 ```
 Install node.js modules
 ```js
@@ -37,7 +37,7 @@ coffee server.coffee
 
 # Routes
 
-show if its working
+preview your gallieres (overview)
 * http://localhost:6166/
 
 initialize a gallery
@@ -60,6 +60,7 @@ add the script
 ```html
 <head>
     <script>
+        window.Pusch360Plugins = []
         window.Pusch360Plugins.push({selector: ".gallery1", name: "gallery1"});
     </script>
     <script type="text/javascript" src="/360images/lib.min.js"></script>

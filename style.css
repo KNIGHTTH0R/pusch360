@@ -21,6 +21,8 @@
   background: white;
   padding: 24px;
 }
+.overlay img {width:100%;}
+.overlay p, .overlay h1, .overlay h2 {margin-left:24px;margin-right:25px;}
 .hotspot {
   z-index:1000;
   position: absolute!important;
@@ -28,7 +30,7 @@
 .hotspot::before {
   content: "+";
   line-height: 1;
-  background: #f06c0b;
+  background: #000;
   border: 1px solid white;
   color: white;
   font-size: 12px;

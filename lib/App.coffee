@@ -29,6 +29,7 @@ define [
 
       @HotspotDetailView = new HotspotDetailView
       @$el.append "<div class='overlay'></div>"
+      @$el.find(".overlay").append @HotspotDetailView.render()
       input = $("<input type='button' class='add-hs' value='new hotspot' />").appendTo @$el
       input.on "click", =>
         model = @HotspotDetailView.addHotspot()
@@ -47,11 +48,7 @@ define [
       stepModel = @Steps.first()
       view = new HotspotView model: model, currentStep: stepModel.get("_id")
       view.on "editHotspot", (model)=>
-        @HotspotDetailView.model = model
-        overlay = @$el.find '.overlay'
-        overlay.html @HotspotDetailView.render()
-        overlay.show().one "dblclick", -> $(@).hide()
-        console.log @HotspotDetailView.render()
+        @HotspotDetailView.changeModel model
 
       @HotspotViews.push view
       @$el.append view.render().el
@@ -63,11 +60,6 @@ define [
         view.changeCurrentStep(id)
 
     addAllHS: ->
-      hotspotModel = Hotspots.first()
-      unless hotspotModel?
-        hotspotModel = new Hotspot
-      @hotspotDetailView = new HotspotDetailView model: hotspotModel
-      @hotspotDetailView.on "addHotspot", @addOneHS, @
       Hotspots.each @addOneHS, @
 
   for key, plugin of window.Pusch360Plugins

@@ -1,22 +1,24 @@
 define [
   'backbone'
   'underscore'
-  'text!templates/hotspot.html'
-], (Backbone, _, Template)->
+], (Backbone, _)->
   class HotspotView extends Backbone.View
-    className: "hotspot-container"
-
+    className: "hotspot"
     initialize:(args) ->
       @zoomStates = 5
       @rePosition()
       @model.on "change", @render, @
-      @model.on "destroy", @remove, @
+      @model.on "destroy", @destroy, @
       @$el.bind "dragstop", @setCurrentPosition.bind(@)
       @$el.bind "mousewheel", @scroll.bind(@)
       @$el.bind "dblclick", =>
         @trigger "editHotspot", @model
 
-    template: _.template Template
+    destroy:->
+      @$el.unbind()
+      @unbind()
+      @remove()
+      console.log "removed"
 
     scroll: (e)->
       @checkStep()
@@ -34,7 +36,7 @@ define [
     rePosition:->
       @checkStep()
       hsPos = @model.attributes.positions[@currentStep]
-      @$el.find(".hotspot").css
+      @$el.css
         top: hsPos.x
         left: hsPos.y
         transform: "scale("+hsPos.z+")"
@@ -50,11 +52,10 @@ define [
 
     setCurrentPosition:->
       @checkStep()
-      @model.attributes.positions[@currentStep].x = @$el.find(".hotspot").css "top"
-      @model.attributes.positions[@currentStep].y = @$el.find(".hotspot").css "left"
+      @model.attributes.positions[@currentStep].x = @$el.css "top"
+      @model.attributes.positions[@currentStep].y = @$el.css "left"
       @model.save()
 
     render: ->
-      @$el.html @template @model.toJSON()
-      @$el.find('.hotspot').draggable()
+      @$el.draggable()
       @

@@ -8,13 +8,13 @@ define [
   class HotspotDetailView extends Backbone.View
 
     initialize:->
-      if @model then @render()
+      @render()
 
     template: _.template Template
 
     render: ->
-      @template @model.toJSON()
-
+      @$el.html @template
+      @$el
 
     events:
       "click #newHotspot": "addHotspot"
@@ -26,6 +26,12 @@ define [
         success:->
       @hideOverlay()
 
+    changeModel: (model)->
+      @model = model
+      $('#hotspot-title').val model.attributes.title
+      $('#hotspot-content').val model.attributes.content
+      @showOverlay()
+
     saveHotspot:->
       @model.set
         title: $("#hotspot-title").val()
@@ -34,10 +40,12 @@ define [
       @hideOverlay()
 
     hideOverlay: ->
-      @$el.parent().hide()
+      $('.overlay').hide()
 
     showOverlay: ->
-      @$el.parent().show()
+      $('.overlay').one "dblclick", -> $(@).hide()
+      $('.overlay').show()
+
 
     addHotspot: ->
       that = @

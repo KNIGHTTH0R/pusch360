@@ -24,11 +24,12 @@ Make sure mongod process is running, start it with
 mongod
 ```
 
-## dowload and install
+## dowload, install and build
 
 ```shell
-git clone https://github.com/dni/pusch360.git && cd pusch360 && npm i && bower install
+git clone https://github.com/dni/pusch360.git && cd pusch360 && npm i && bower install && grunt build
 ```
+
 
 ## start the app
 ```shell

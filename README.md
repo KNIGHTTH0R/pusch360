@@ -60,11 +60,12 @@ add the script
 
 ```html
 <head>
+    <link rel="stylesheet" type="text/css" href="/360images/style.css" media="all">
+    <script type="text/javascript" src="/360images/lib.min.js"></script>
     <script>
         window.Pusch360Plugins = []
-        window.Pusch360Plugins.push({selector: ".gallery1", name: "gallery1"});
+        window.Pusch360Plugins.push({selector: ".gallery1", dir: "gallery1"});
     </script>
-    <script type="text/javascript" src="/360images/lib.min.js"></script>
 </head>
 <body>
     <div class="gallery1"></div>

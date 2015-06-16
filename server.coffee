@@ -145,7 +145,7 @@ app.get "/init/:dir", (req, res)->
 
     # create new steps for each jpg
     stepping = (file, callback)->
-      if file.match(/.jpg/g)
+      if file.match(/.jpg/g) or file.match(/.png/g)
         thumbnail = gm('./360images/'+dir+'/'+file).resize 400
         thumbnailName = 'thumbnail_'+file
         thumbnail.write './360images/'+dir+'/'+thumbnailName, (err) ->

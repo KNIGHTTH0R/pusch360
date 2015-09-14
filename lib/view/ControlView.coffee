@@ -26,9 +26,12 @@ define [
 
     initialize:()->
       $(window).on "mouseup", @endSlide.bind(@)
+      $(window).on "touchend", @endSlide.bind(@)
       $(window).on "mousemove", @slideImages.bind(@)
+      $(window).on "touchmove", @slideImages.bind(@)
       $(window).on "keyup", @keyupEvent.bind(@)
       @$el.on "mousedown", @startSlide.bind(@)
+      @$el.on "touchstart", @startSlide.bind(@)
 
 
 
@@ -36,7 +39,10 @@ define [
 
     slideImages: (e)->
       return unless @isDrag
-      thisPos = e.pageX || e.screenX
+      if e.type is "touchmove"
+        thisPos = e.originalEvent.changedTouches[0].pageX
+      else
+        thisPos = e.pageX || e.screenX
       diff = @dragPos - thisPos
       return unless diff>@tresh || diff<-@tresh
       if diff>0 then @prevStep()
@@ -44,7 +50,10 @@ define [
       @dragPos = thisPos
 
     startSlide: (e)->
-      @dragPos = e.pageX || e.screenX
+      if e.type is "touchstart"
+        @dragPos = e.originalEvent.changedTouches[0].pageX
+      else
+        @dragPos = e.pageX || e.screenX
       @isDrag = true
 
     endSlide: (e)->

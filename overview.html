@@ -9,7 +9,7 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+        <link rel="stylesheet" type="text/css" href="style.css">
         <style>
           body > div {float:left;}
         </style>
@@ -30,15 +30,18 @@
         <ul id="list"></ul>
         <script>
           window.Pusch360Plugins = <%- JSON.stringify(galleries) %>;
+          document.addEventListener("pusch360", function(){
+              // list
+              var html = '';
+              for(var i = 0; i < window.Pusch360Plugins.length; i++) {
+                var dir = window.Pusch360Plugins[i].dir;
+                var gallery = new Pusch360Gallery(Pusch360Plugins[i]);
+                html += "<li><a href='/show/"+dir+"'>"+dir+"</a></li>";
+              }
+              var ul = document.getElementById("list");
+              ul.innerHTML = html
+          });
 
-          // list
-          var html = '';
-          for(var i = 0; i < window.Pusch360Plugins.length; i++) {
-            var dir = window.Pusch360Plugins[i].dir;
-            html += "<li><a href='/show/"+dir+"'>"+dir+"</a></li>"
-          }
-          var ul = document.getElementById("list");
-          ul.innerHTML = html
          </script>
         <script type="text/javascript" data-main="/config-user.js" src="/lib/require.js"></script>
          <!-- <script src="/build.min.js"></script> -->

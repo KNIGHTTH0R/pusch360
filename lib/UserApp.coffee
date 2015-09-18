@@ -15,29 +15,30 @@ define [
 
     className: "gallery-container"
     initialize:(args)->
-      unless args.selector
-        selector = "gallery-"+Date.now()
-        $("body").append "<div id='"+selector+"'></div>"
-        args.selector = selector
-      $('#'+args.selector).append @$el
+     $.get '/360images/'+args.dir+'/config.json', (config)=>
+        unless args.selector
+          selector = "gallery-"+Date.now()
+          $("body").append "<div id='"+selector+"'></div>"
+          args.selector = selector
+        $('#'+args.selector).append @$el
 
-      @HotspotViews = []
+        @HotspotViews = []
 
-      control = new Backbone.Model
-      control.set
-        total: args.config.steps.length
-        current: 1
-      controlView = new ControlView model: control
-      controlView.on "changeStep", @changeSteps, @
+        control = new Backbone.Model
+        control.set
+          total: config.steps.length
+          current: 1
+        controlView = new ControlView model: control
+        controlView.on "changeStep", @changeSteps, @
 
-      @$el.append controlView.render().el
-      @HotspotDetailView = new HotspotDetailView
-      @$el.append("<div class='overlay-container'></div>")
-      @Steps = new Steps
-      @listenTo @Steps, 'reset', @addAll
-      @listenTo Hotspots, 'reset', @addAllHS
-      @Steps.reset args.config.steps
-      Hotspots.reset args.config.hotspots
+        @$el.append controlView.render().el
+        @HotspotDetailView = new HotspotDetailView
+        @$el.append("<div class='overlay-container'></div>")
+        @Steps = new Steps
+        @listenTo @Steps, 'reset', @addAll
+        @listenTo Hotspots, 'reset', @addAllHS
+        @Steps.reset config.steps
+        Hotspots.reset config.hotspots
 
     addAll: ->
       @stepView = new StepView collection: @Steps
@@ -65,8 +66,3 @@ define [
     addAllHS: ->
       Hotspots.each @addOneHS, @
 
-  for key, plugin of window.Pusch360Plugins
-    $.get '/360images/'+plugin.dir+'/config.json', (cfg)->
-      new AppView
-        selector: plugin.selector
-        config: cfg

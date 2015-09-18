@@ -17,4 +17,10 @@ require.config({
     ]
 });
 
-require(['cs!UserApp']);
+require(['jquery', 'cs!UserApp'],function($, Gallery){
+  window.Pusch360Gallery = Gallery;
+  var event = new CustomEvent("pusch360");
+  $(function(){
+    document.dispatchEvent(event);
+  });
+});

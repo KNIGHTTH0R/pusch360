@@ -15,7 +15,7 @@ define [
 
     className: "gallery-container"
     initialize:(args)->
-     $.get '/360images/'+args.dir+'/config.json', (config)=>
+      $.get '/360images/'+args.dir+'/config.json', (config)=>
         unless args.selector
           selector = "gallery-"+Date.now()
           $("body").append "<div id='"+selector+"'></div>"

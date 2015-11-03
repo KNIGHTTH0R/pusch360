@@ -56,18 +56,24 @@ download a gallery
 # how to include on your website
 
 place to extracted zip file from downloadGallery on your webserverroot /360images/dirName
-add the script
+place this into your html
 
 ```html
 <head>
     <link rel="stylesheet" type="text/css" href="/360images/style.css" media="all">
-    <script type="text/javascript" src="/360images/lib.min.js"></script>
-    <script>
-        window.Pusch360Plugins = []
-        window.Pusch360Plugins.push({selector: ".gallery1", dir: "gallery1"});
-    </script>
 </head>
 <body>
     <div class="gallery1"></div>
+    <script type="text/javascript" src="/360images/pusch360.min.js"></script>
+    <script>
+      // init on startup
+      document.addEventListener("pusch360", function(){
+        var gallery1 = new Pusch360Gallery({selector: "gallery1", dir: "8000_SB_Background"});
+      });
+      // or init dynamically
+      $('#myModal').on('shown.bs.modal', function (e) {
+        new Pusch360Gallery({selector: „someHtmlId", dir: "8000_SB_Background"});
+      });
+    </script>
 </body>
 ```

@@ -17,7 +17,7 @@ define [
     className: "gallery-container"
 
     initialize:(args)->
-      $(args.selector).append @$el
+      $("#"+args.selector).append @$el
       @HotspotViews = []
       control = new Backbone.Model
       control.set
@@ -61,8 +61,3 @@ define [
 
     addAllHS: ->
       Hotspots.each @addOneHS, @
-
-  for key, plugin of window.Pusch360Plugins
-    new AppView
-      selector: plugin.selector
-      config: plugin.config

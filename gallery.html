@@ -32,10 +32,8 @@
            <div id="gallery"></div>
          </div>
         <script>
-            window.Pusch360Plugins = [];
-            window.Pusch360Plugins.push({selector: 'gallery', config: <%-JSON.stringify(config) %>, dir: 'test'});
             document.addEventListener("pusch360", function(){
-              alert("load gallery");
+              var gallery1 = new Pusch360Gallery({selector: "gallery", config: <%-JSON.stringify(config) %>});
             });
          </script>
         <script type="text/javascript" data-main="/config.js" src="/lib/require.js"></script>

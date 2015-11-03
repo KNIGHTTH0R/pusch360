@@ -72,7 +72,7 @@ place this into your html
       });
       // or init dynamically
       $('#myModal').on('shown.bs.modal', function (e) {
-        new Pusch360Gallery({selector: „someHtmlId", dir: "8000_SB_Background"});
+        new Pusch360Gallery({selector: "someHTMLid", dir: "8000_SB_Background"});
       });
     </script>
 </body>

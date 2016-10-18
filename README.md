@@ -8,11 +8,11 @@ pusch360
 ## Software Requirements
 
 ```js
-apt-get install npm git mongodb graphicsmagick zip npm
+apt-get install npm git mongodb graphicsmagick zip
 ```
 On Mac OSX use Homebrew
 ```js
-brew install nodejs git mongodb graphicsmagick
+brew install npm git mongodb graphicsmagick
 ```
 Install node.js modules
 ```js

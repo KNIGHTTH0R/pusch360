@@ -46,6 +46,8 @@ preview your gallieres (overview)
 * http://localhost:6166/
 
 initialize a gallery
+* create a folder yourrepos/360images
+* create a folder with your gallery and init is wit /init/+foldername
 * http://localhost:6166/init/dirName
 
 delete/reset a gallery
